@@ -1,7 +1,8 @@
 #Ptr Comparizon
-Still working
 
 **Only compare stars > 1500 repos now, I would take more representavie repo into compare later.**
+
+##Known repos
 
 |Repo|Owner|Star (up to2015.12.5)|
 |:--:|:--:|:------:|:---:|:--:|
@@ -11,7 +12,13 @@ Still working
 |[Phoenix][7]|[Yalantis][8]|1897|
 |[FlyRefresh][9]|[race604][10]|1843|
 
+##Demo snapshot
+
 ![demo](/demo.gif)
+
+##Compare&Analysis
+
+Still working.
 
 [1]: https://github.com/liaohuqiu/android-Ultra-Pull-To-Refresh
 [2]: https://github.com/liaohuqiu
