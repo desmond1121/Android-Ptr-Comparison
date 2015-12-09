@@ -1,15 +1,13 @@
-#主流下拉刷新开源库性能对比
----
+#Ptr Comparizon
+Still working
 
-正在进行中.
+**Only compare stars > 1500 repos now, I would take more representavie repo into compare later.**
 
-由于轮子众多，目前仅比对github上作者已知的star>1500开源库。
-
-|Repo|Owner|Star (截止2015.12.5)|
+|Repo|Owner|Star (up to2015.12.5)|
 |:--:|:--:|:------:|:---:|:--:|
-|[Android-PullToRefresh][3]<br/>(已停止维护)|[chrisbanes][4]|6014|
+|[Android-PullToRefresh][3]<br/>(Stop maintain)|[chrisbanes][4]|6014|
 |[android-Ultra-Pull-To-Refresh][1]|[liaohuqiu][2]|3413|
-|[android-pulltorefresh][5]<br/>(已停止维护)|[johannilsson][6]|2414|
+|[android-pulltorefresh][5]<br/>(Stop maintain)|[johannilsson][6]|2414|
 |[Phoenix][7]|[Yalantis][8]|1897|
 |[FlyRefresh][9]|[race604][10]|1843|
 
