@@ -60,7 +60,7 @@ trace snapshot:
 
 ![liaohuqiu_header](/liaohuqiu_ptr_header.PNG)
 
-看！都是wrap_content，那么当里面的内容变化的时候，是会触发requestLayout的。不要小看这一个子视图的小操作，一个requestLayout大概是这么一个流程：`View.requestLayout()`->`ViewParent.requestLayout()`->...->`ViewRootImpl.requestLayout()`->`ViewRootImpl.doTraversal()`=>MEASURE ViewGroup=>MEASURE View
+看！都是`wrap_content`，那么当里面的内容变化的时候，是会触发`View.requestLayout()`的。不要小看这一个子视图的小操作，一个`requestLayout()`大概是这么一个流程：`View.requestLayout()`->`ViewParent.requestLayout()`->...->`ViewRootImpl.requestLayout()`->`ViewRootImpl.doTraversal()`=>**MEASURE**(`ViewGroup`)=>**MEASURE**(`View`)
 
 在层级复杂的时候（大部分互联网产品由于复杂的产品需求嵌套都会比较多），它会层层向上调用，将measure时间放大至一个可观的层级。下拉刷新界面的卡顿由此而来。
 
