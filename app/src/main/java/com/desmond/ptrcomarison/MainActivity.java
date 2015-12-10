@@ -8,7 +8,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.desmond.ptrcomarison.common.MainThreadBlocker;
 import com.desmond.ptrcomarison.fragments.AbstractFragment;
 import com.desmond.ptrcomarison.fragments.ChrisBanesPtrFragment;
 import com.desmond.ptrcomarison.fragments.JohanPtrFragment;
@@ -34,9 +33,6 @@ public class MainActivity extends AppCompatActivity {
 
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         tabLayout.setupWithViewPager(vp);
-
-        MainThreadBlocker.DISABLE = true;
-        MainThreadBlocker.start();
     }
 
     private void initFragments(){
