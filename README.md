@@ -15,7 +15,7 @@
 |Repo|自定义顶部视图|支持的内容布局|
 |:--:|:--:|:--:|:---:|:--:|:--:|
 |[Android-PullToRefresh][3]|不支持，只能改代码。<br/>由于仅支持其中实现的`LoadingLayout`作为顶视图，改代码实现自定义工作量较大。|任意视图，内置:`GridView`<br/>`ListView`,`HorizontalScrollView`<br/> `ScrollView` ,`WebView`|
-|[android-Ultra-Pull-To-Refresh][1]|任意视图。<br/> 通过继承`PtrUIHandler`并调用`PtrFrameLayout.addPtrUIHandler()`得到最大支持。|任意视图||
+|[android-Ultra-Pull-To-Refresh][1]|任意视图。<br/> 通过继承`PtrUIHandler`并调用<br/>`PtrFrameLayout.addPtrUIHandler()`得到最大支持。|任意视图||
 |[android-pulltorefresh][5]|不支持，只能改代码。<br/> 代码仅一个`ListView`，耦合度太高，改动工作量较大。|无法扩展，自身为`ListView`|
 |[Phoenix][7]|不支持，此控件特点就是顶部视图及动画。|任意视图|
 |[FlyRefresh][9]|不支持，此控件特点就是顶部视图及动画。|任意视图|
