@@ -2,7 +2,7 @@
 目前仅比对github上star数>1500的下拉刷新开源库，在比较完成之后可能会加入其它有代表性的库.
 
 ##Repo
-|Repo|Owner|Star (up to2015.12.5)|SanpShot|
+|Repo|Owner|Star (up to2015.12.5)|Snap shot|
 |:--:|:--:|:------:|:---:|:--:|
 |[Android-PullToRefresh][3]<br/>(已停止维护)|[chrisbanes][4]|6014|![chrisbanes](/demo_gif/chrisbanes.gif)|
 |[android-Ultra-Pull-To-Refresh][1]|[liaohuqiu][2]|3413|![liaohuqiu](/demo_gif/liaohuqiu.gif)|
