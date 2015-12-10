@@ -56,11 +56,15 @@ trace snapshot:
 
 ![trace_liaohuqiu](/traces/liaohuqiu.PNG)
 
-这套开源库可以说是自定义功能最强的组件了，美中不足的就是在下拉状态变化的时候会有一阵measure时间。我查看了一下代码，发现是`PtrClassicFrameLayout`的顶部视图除了问题：
+这套开源库可以说是自定义功能最强的组件了，美中不足的就是在下拉状态变化的时候会有一阵measure时间。我查看了一下代码，发现是`PtrClassicFrameLayout`的顶部视图出了问题：
 
 ![liaohuqiu_header](/liaohuqiu_ptr_header.PNG)
 
-看！都是wrap_content，那么当里面的内容变化的时候，必然是会触发重新measure的。我修改了一下，将其全部变为固定高度、宽度，之后的trace如下：
+看！都是wrap_content，那么当里面的内容变化的时候，是会触发requestLayout的。不要小看这一个子视图的小操作，一个requestLayout大概是这么一个流程：`View.requestLayout()`->`ViewParent.requestLayout()`->...->`ViewRootImpl.requestLayout()`->`ViewRootImpl.doTraversal()`=>MEASURE ViewGroup=>MEASURE View
+
+在层级复杂的时候（大部分互联网产品由于复杂的产品需求嵌套都会比较多），它会层层向上调用，将measure时间放大至一个可观的层级。下拉刷新界面的卡顿由此而来。
+
+我修改了一下，将其全部变为固定高度、宽度，之后的trace如下：
 
 ![trace_liaohuqiu_new](/traces/liaohuqiu_new.PNG)
 
@@ -76,9 +80,7 @@ trace snapshot:
 
 分析：
 
-通过顶视图调用`View.setPadding()`来实现的滑动，会依次触发：`View.requestLayout()`->`ViewParent.requestLayout()`->...->`ViewRootImpl.requestLayout()`->`ViewRootImpl.doTraversal()`=>**MEASURE!**
-
-这就解释了为什么图中UI线程的蓝色块时间很明显，这是因为measure会触发递归的函数调用及大量计算。**当视图层级更加复杂时，它所造成的开销会非常明显，下拉刷新过程的卡顿是必然结果。**
+通过顶视图调用`View.setPadding()`来实现的滑动，是会造成不断的`requestLayout()`!这就解释了为什么图中UI线程的蓝色块时间很明显。**当你在视图层级比较复杂的app中使用它时，下拉动作所造成的开销会非常明显，卡顿是必然结果。**
 
 ###4. Yalantis's Ptr
 
@@ -88,7 +90,7 @@ trace snapshot:
 
 ![trace_yalantis](/traces/yalantis.PNG)
 
-
+分析：此开源库动画效果非常柔和，且顶部视图全部是通过draw去更新，不会造成第三个开源库那样的大开销问题。可惜的是比较难以去自定义顶部视图，不好在大型线上产品中使用，不过这个开源库是一个好的练手与学习的对象。它的性能同样非常好。
 
 ###5. race604's Ptr
 
@@ -97,6 +99,8 @@ trace snapshot:
 trace snapshot:
 
 ![trace_flyrefresh](/traces/flyrefresh.PNG)
+
+分析：待分析。
 
 [1]: https://github.com/liaohuqiu/android-Ultra-Pull-To-Refresh
 [2]: https://github.com/liaohuqiu

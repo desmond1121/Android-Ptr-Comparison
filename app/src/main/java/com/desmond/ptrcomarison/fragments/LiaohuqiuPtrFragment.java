@@ -2,8 +2,10 @@ package com.desmond.ptrcomarison.fragments;
 
 import android.widget.ListView;
 
+import com.desmond.ptrcomarison.LiaohuqiuPtrHeader;
 import com.desmond.ptrcomarison.R;
 
+import in.srain.cube.views.ptr.PtrClassicDefaultHeader;
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
 import in.srain.cube.views.ptr.PtrFrameLayout;
@@ -15,6 +17,7 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  */
 public class LiaohuqiuPtrFragment extends AbstractFragment {
     private PtrFrameLayout mPtr;
+    private LiaohuqiuPtrHeader mHeader;
 
     @Override
     public String getTitle() {
@@ -25,6 +28,9 @@ public class LiaohuqiuPtrFragment extends AbstractFragment {
     protected ListView getListView() {
         if (mPtr == null) {
             mPtr = (PtrFrameLayout) mLayout.findViewById(R.id.ptr_frame_layout);
+            mHeader = new LiaohuqiuPtrHeader(getContext());
+            mPtr.setHeaderView(mHeader);
+            mPtr.addPtrUIHandler(mHeader);
         }
 
         if (mPtr.getContentView() instanceof ListView){
