@@ -14,7 +14,7 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
  * Created by desmond on 2015/12/9.
  */
 public class LiaohuqiuPtrFragment extends AbstractFragment {
-    private PtrClassicFrameLayout mPtr;
+    private PtrFrameLayout mPtr;
 
     @Override
     public String getTitle() {
@@ -24,7 +24,7 @@ public class LiaohuqiuPtrFragment extends AbstractFragment {
     @Override
     protected ListView getListView() {
         if (mPtr == null) {
-            mPtr = (PtrClassicFrameLayout) mLayout.findViewById(R.id.ptr_frame_layout);
+            mPtr = (PtrFrameLayout) mLayout.findViewById(R.id.ptr_frame_layout);
         }
 
         if (mPtr.getContentView() instanceof ListView){

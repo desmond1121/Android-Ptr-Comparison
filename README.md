@@ -46,6 +46,8 @@ trace snapshot:
 
 ![trace_chrisbanes](/traces/chrisbanes.PNG)
 
+作为Github上星星数最多的Android下拉刷新控件，从性能上看（渲染时间构成）几乎没有什么明显的缺点。可惜的是作者已经不再维护，并且gradle中也无法使用。在本次demo这类层级比较简单的环境中，渲染时间几乎都达到了16秒，可以与后面的trace对比。
+
 ###2. liaohuqiu's Ptr
 
 滑动实现方式：`Scroller` + `View.post(Runnable)` + `View.offsetTopAndBottom()`
@@ -53,6 +55,16 @@ trace snapshot:
 trace snapshot:
 
 ![trace_liaohuqiu](/traces/liaohuqiu.PNG)
+
+这套开源库可以说是自定义功能最强的组件了，美中不足的就是在下拉状态变化的时候会有一阵measure时间。我查看了一下代码，发现是`PtrClassicFrameLayout`的顶部视图除了问题：
+
+![liaohuqiu_header](/liaohuqiu_ptr_header.PNG)
+
+看！都是wrap_content，那么当里面的内容变化的时候，必然是会触发重新measure的。我修改了一下，将其全部变为固定高度、宽度，之后的trace如下：
+
+![trace_liaohuqiu_new](/traces/liaohuqiu_new.PNG)
+
+measure时间神奇的没掉了吧:P
 
 ###3. johannilsson's Ptr
 
@@ -62,6 +74,12 @@ trace snapshot:
 
 ![trace_johan](/traces/johan.PNG)
 
+分析：
+
+通过顶视图调用`View.setPadding()`来实现的滑动，会依次触发：`View.requestLayout()`->`ViewParent.requestLayout()`->...->`ViewRootImpl.requestLayout()`->`ViewRootImpl.doTraversal()`=>**MEASURE!**
+
+这就解释了为什么图中UI线程的蓝色块时间很明显，这是因为measure会触发递归的函数调用及大量计算。**当视图层级更加复杂时，它所造成的开销会非常明显，下拉刷新过程的卡顿是必然结果。**
+
 ###4. Yalantis's Ptr
 
 滑动实现方式：`Animation` + `View.topAndBottomOffset()`
@@ -69,6 +87,8 @@ trace snapshot:
 trace snapshot:
 
 ![trace_yalantis](/traces/yalantis.PNG)
+
+
 
 ###5. race604's Ptr
 

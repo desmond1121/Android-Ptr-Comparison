@@ -4,14 +4,16 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <in.srain.cube.views.ptr.PtrClassicFrameLayout
+    <in.srain.cube.views.ptr.PtrFrameLayout
         android:id="@+id/ptr_frame_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <include
+            layout="@layout/liaohuqiu_ptr_head"/>
 
         <ListView
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
 
-    </in.srain.cube.views.ptr.PtrClassicFrameLayout>
+    </in.srain.cube.views.ptr.PtrFrameLayout>
 </LinearLayout>
