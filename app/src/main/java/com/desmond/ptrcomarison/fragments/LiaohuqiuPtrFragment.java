@@ -1,8 +1,5 @@
 package com.desmond.ptrcomarison.fragments;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.view.View;
 import android.widget.ListView;
 
 import com.desmond.ptrcomarison.R;
@@ -14,7 +11,7 @@ import in.srain.cube.views.ptr.PtrFrameLayout;
 /**
  * Ptr Fragment using {@link "https://github.com/liaohuqiu/android-Ultra-Pull-To-Refresh"}
  *
- * Created by Jiayi Yao on 2015/12/9.
+ * Created by desmond on 2015/12/9.
  */
 public class LiaohuqiuPtrFragment extends AbstractFragment {
     private PtrClassicFrameLayout mPtr;

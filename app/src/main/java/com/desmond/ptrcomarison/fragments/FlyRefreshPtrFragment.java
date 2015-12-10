@@ -4,11 +4,12 @@ import android.widget.ListView;
 
 import com.desmond.ptrcomarison.R;
 import com.race604.flyrefresh.FlyRefreshLayout;
+import com.race604.flyrefresh.PullHeaderLayout;
 
 /**
  * Ptr Fragment using {@link "https://github.com/race604/FlyRefresh"}
  * <p>
- * Created by Jiayi Yao on 2015/12/9.
+ * Created by desmond on 2015/12/9.
  */
 public class FlyRefreshPtrFragment extends AbstractFragment {
     private FlyRefreshLayout mPtr;
@@ -49,6 +50,7 @@ public class FlyRefreshPtrFragment extends AbstractFragment {
 
             }
         });
+
         super.init();
     }
 

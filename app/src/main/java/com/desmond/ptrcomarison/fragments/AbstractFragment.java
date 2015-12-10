@@ -11,12 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.desmond.ptrcomarison.CommonListAdapter;
+import com.desmond.ptrcomarison.common.CommonListAdapter;
 import com.desmond.ptrcomarison.MainActivity;
 import com.squareup.picasso.Picasso;
 
 /**
- * Created by Jiayi Yao on 2015/12/9.
+ * Base fragment
+ * Created by desmond on 2015/12/9.
  */
 public abstract class AbstractFragment extends Fragment{
     private static final String TAG = "Ptr";

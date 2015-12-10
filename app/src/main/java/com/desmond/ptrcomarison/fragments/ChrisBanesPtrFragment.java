@@ -1,8 +1,5 @@
 package com.desmond.ptrcomarison.fragments;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.view.View;
 import android.widget.ListView;
 
 import com.desmond.ptrcomarison.R;
@@ -12,7 +9,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshListView;
 /**
  * Ptr Fragment using {@link "https://github.com/chrisbanes/Android-PullToRefresh"}
  *
- * Created by Jiayi Yao on 2015/12/9.
+ * Created by desmond on 2015/12/9.
  */
 public class ChrisBanesPtrFragment extends AbstractFragment {
     private PullToRefreshListView mPtr;

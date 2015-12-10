@@ -6,8 +6,9 @@ import com.desmond.ptrcomarison.R;
 import com.yalantis.phoenix.PullToRefreshView;
 
 /**
- *  Ptr Fragment using {@link "https://github.com/Yalantis/Phoenix"}
- * Created by Jiayi Yao on 2015/12/9.
+ * Ptr Fragment using {@link "https://github.com/Yalantis/Phoenix"}
+ * <p/>
+ * Created by desmond on 2015/12/9.
  */
 public class YalantisPtrFragment extends AbstractFragment{
     private PullToRefreshView mPtr;
