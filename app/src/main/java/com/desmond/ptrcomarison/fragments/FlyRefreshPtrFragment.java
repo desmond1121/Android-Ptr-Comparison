@@ -37,19 +37,18 @@ public class FlyRefreshPtrFragment extends AbstractFragment {
     protected void init() {
         if (mPtr == null) {
             mPtr = (FlyRefreshLayout) mLayout.findViewById(R.id.fly_layout);
+            mPtr.setOnPullRefreshListener(new FlyRefreshLayout.OnPullRefreshListener() {
+                @Override
+                public void onRefresh(FlyRefreshLayout view) {
+                    refresh();
+                }
+
+                @Override
+                public void onRefreshAnimationEnd(FlyRefreshLayout view) {
+
+                }
+            });
         }
-
-        mPtr.setOnPullRefreshListener(new FlyRefreshLayout.OnPullRefreshListener() {
-            @Override
-            public void onRefresh(FlyRefreshLayout view) {
-                refresh();
-            }
-
-            @Override
-            public void onRefreshAnimationEnd(FlyRefreshLayout view) {
-
-            }
-        });
 
         super.init();
     }

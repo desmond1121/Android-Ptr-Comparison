@@ -1,14 +1,14 @@
-#Ptr Comparizon
+#下拉刷新开源库对比
 目前仅比对github上star数>1500的下拉刷新开源库，在比较完成之后可能会加入其它有代表性的库.
 
 ##Repo
-|Repo|Owner|Star (up to2015.12.5)|Snap shot|
+|Repo|Owner|Star<br/>(2015.12.5)|version|Snap shot|
 |:--:|:--:|:------:|:---:|:--:|
-|[Android-PullToRefresh][3]<br/>(已停止维护)|[chrisbanes][4]|6014|![chrisbanes](/demo_gif/chrisbanes.gif)|
-|[android-Ultra-Pull-To-Refresh][1]|[liaohuqiu][2]|3413|![liaohuqiu](/demo_gif/liaohuqiu.gif)|
-|[android-pulltorefresh][5]<br/>(已停止维护)|[johannilsson][6]|2414|![johannilsson](/demo_gif/johan.gif)|
-|[Phoenix][7]|[Yalantis][8]|1897|![yalantis](/demo_gif/yalantis.gif)|
-|[FlyRefresh][9]|[race604][10]|1843|![flyrefresh](/demo_gif/flyrefresh.gif)|
+|[Android-PullToRefresh][3]<br/>(作者已停止维护)|[chrisbanes][4]|6014|latest|![chrisbanes](/demo_gif/chrisbanes.gif)|
+|[android-Ultra-Pull-To-Refresh][1]|[liaohuqiu][2]|3413|1.0.11|![liaohuqiu](/demo_gif/liaohuqiu.gif)|
+|[android-pulltorefresh][5]<br/>(作者已停止维护)|[johannilsson][6]|2414|latest|![johannilsson](/demo_gif/johan.gif)|
+|[Phoenix][7]|[Yalantis][8]|1897|1.2.3|![yalantis](/demo_gif/yalantis.gif)|
+|[FlyRefresh][9]|[race604][10]|1843|2.0.0|![flyrefresh](/demo_gif/flyrefresh.gif)|
 
 ##拓展性
 
@@ -24,11 +24,11 @@
 
 |Repo|gradle配置|上拉加载|自动加载|滑动阻尼配置|
 |:--:|:--:|:------:|:---:|:--:|:--:|:--:|
-|[Android-PullToRefresh][3]|×|√|×|
+|[Android-PullToRefresh][3]|×|√|×|移动比固定1/2|
 |[android-Ultra-Pull-To-Refresh][1]|√|×|√|√|
-|[android-pulltorefresh][5]|×|×|×|
-|[Phoenix][7]|√|×|×|
-|[FlyRefresh][9]|√|×|×|
+|[android-pulltorefresh][5]|×|×|×|移动比固定1/1.7|
+|[Phoenix][7]|√|×|×|×|
+|[FlyRefresh][9]|√|×|×|×|
 
 ##性能分析
 
@@ -60,7 +60,7 @@ trace snapshot:
 
 ![liaohuqiu_header](/liaohuqiu_ptr_header.PNG)
 
-看！都是`wrap_content`，那么当里面的内容变化的时候，是会触发`View.requestLayout()`的。不要小看这一个子视图的小操作，一个`requestLayout()`大概是这么一个流程：`View.requestLayout()`->`ViewParent.requestLayout()`->...->`ViewRootImpl.requestLayout()`->`ViewRootImpl.doTraversal()`=>**MEASURE**(`ViewGroup`)=>**MEASURE**(`View`)
+看！都是`wrap_content`，那么当里面的内容变化的时候，是会触发`View.requestLayout()`的。不要小看这一个子视图的小操作，一个`requestLayout()`大概是这么一个流程：`View.requestLayout()`->`ViewParent.requestLayout()`->...->`ViewRootImpl.requestLayout()`->`ViewRootImpl.doTraversal()`=>**MEASURE**(ViewGroup)=>**MEASURE**(ChildView of ViewGroup)
 
 在层级复杂的时候（大部分互联网产品由于复杂的产品需求嵌套都会比较多），它会层层向上调用，将measure时间放大至一个可观的层级。下拉刷新界面的卡顿由此而来。
 
@@ -80,27 +80,34 @@ trace snapshot:
 
 分析：
 
-通过顶视图调用`View.setPadding()`来实现的滑动，是会造成不断的`requestLayout()`!这就解释了为什么图中UI线程的蓝色块时间很明显。**当你在视图层级比较复杂的app中使用它时，下拉动作所造成的开销会非常明显，卡顿是必然结果。**
+通过顶视图调用`View.setPadding()`来实现的滑动，是会造成不断的`requestLayout()`!这就解释了为什么图中UI线程的蓝色块时间(measure时间)很明显。**当你在视图层级比较复杂的app中使用它时，下拉动作所造成的开销会非常明显，卡顿是必然结果。**
 
 ###4. Yalantis's Ptr
 
 滑动实现方式：`Animation` + `View.topAndBottomOffset()`
 
+顶部动效实现方式：`Drawable`的`Canvas`中设置偏移量及缩放。
+
 trace snapshot:
 
 ![trace_yalantis](/traces/yalantis.PNG)
 
-分析：此开源库动画效果非常柔和，且顶部视图全部是通过draw去更新，不会造成第三个开源库那样的大开销问题。可惜的是比较难以去自定义顶部视图，不好在大型线上产品中使用，不过这个开源库是一个好的练手与学习的对象。它的性能同样非常好。
+分析：此开源库动画效果非常柔和，且顶部视图全部是通过draw去更新，不会造成第三个开源库那样的大开销问题。可惜的是比较难以去自定义顶部视图，不好在大型线上产品中使用，不过这个开源库是一个好的练手与学习的对象。由于顶部动效实现开销不大，它的性能同样非常好。
 
 ###5. race604's Ptr
 
-滑动实现方式：`NestedScrollingChildHelper.dispatchNestedScroll()`
+滑动实现方式：`View.topAndBottomOffset()`
+
+顶部动效实现方式：
+
+- **飞机滑动** `ObjectAnimator`.
+- **背景缩放** 通过放大系数计算`Path`后进行draw.
 
 trace snapshot:
 
 ![trace_flyrefresh](/traces/flyrefresh.PNG)
 
-分析：待分析。
+分析：每次拖动都会重新计算背景"山体"与"树木"的`Path`，造成了draw时间过长。效果不错，也是一个好的学习对象，相比`Yalantis`的下拉刷新性能上就差一些了，它的draw中计算量太多。使用起来疑似bug。
 
 [1]: https://github.com/liaohuqiu/android-Ultra-Pull-To-Refresh
 [2]: https://github.com/liaohuqiu
