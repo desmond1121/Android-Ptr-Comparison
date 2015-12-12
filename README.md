@@ -114,10 +114,10 @@ trace snapshot:
 1. [为你的应用加速 - 安卓优化指南](https://github.com/bboyfeiyu/android-tech-frontier/blob/master/issue-27/%E4%B8%BA%E4%BD%A0%E7%9A%84%E5%BA%94%E7%94%A8%E5%8A%A0%E9%80%9F%20-%20%E5%AE%89%E5%8D%93%E4%BC%98%E5%8C%96%E6%8C%87%E5%8D%97.md)
 2. [使用Systrace分析UI性能](https://github.com/bboyfeiyu/android-tech-frontier/blob/b7e3f1715158fb9f2bbb0f349c4ec3da3db81342/issue-26/%E4%BD%BF%E7%94%A8Systrace%E5%88%86%E6%9E%90UI%E6%80%A7%E8%83%BD.md)
 
-[1]: https://github.com/liaohuqiu/android-Ultra-Pull-To-Refresh
-[2]: https://github.com/liaohuqiu
-[3]: https://github.com/chrisbanes/Android-PullToRefresh
 [4]: https://github.com/chrisbanes
+[3]: https://github.com/chrisbanes/Android-PullToRefresh
+[2]: https://github.com/liaohuqiu
+[1]: https://github.com/liaohuqiu/android-Ultra-Pull-To-Refresh
 [5]: https://github.com/johannilsson/android-pulltorefresh
 [6]: https://github.com/johannilsson
 [7]: https://github.com/Yalantis/Phoenix
