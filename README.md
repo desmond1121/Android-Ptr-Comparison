@@ -9,7 +9,7 @@
 |[android-pulltorefresh][5]<br/>(作者已停止维护)|[johannilsson][6]|2414|latest|![johannilsson](/demo_gif/johan.gif)|
 |[Phoenix][7]|[Yalantis][8]|1897|1.2.3|![yalantis](/demo_gif/yalantis.gif)|
 |[FlyRefresh][9]|[race604][10]|1843|2.0.0|![flyrefresh](/demo_gif/flyrefresh.gif)|
-|[SwipeRefreshLayout][11]|Android <br/> Support v4|None|19.1.0|![swipe_refresh](/demo_gif/swipe.gif)|
+|[SwipeRefreshLayout][11]|Android <br/> Support v4 <br/> (19.1.0 ↑)|None|latest|![swipe_refresh](/demo_gif/swipe.gif)|
 
 ##拓展性
 
