@@ -110,7 +110,7 @@ trace snapshot:
 
 ![trace_flyrefresh](/traces/flyrefresh.PNG)
 
-分析：每次拖动都会重新计算背景"山体"与"树木"的`Path`，造成了draw时间过长。效果不错，也是一个好的学习对象，相比`Yalantis`的下拉刷新性能上就差一些了，它的draw中的计算量太多。使用起来疑似有bug：拖动到顶部，无法再网上拖动，并且会出现拖动异常。
+分析：每次拖动都会重新计算背景"山体"与"树木"的`Path`，造成了draw时间过长。效果不错，也是一个好的学习对象，相比`Yalantis`的下拉刷新性能上就差一些了，它的draw中的计算量太多。使用起来疑似有bug：拖动到顶部，无法再往上拖动，并且会出现拖动异常。
 
 ###6. SwipeRefreshLayout
 
