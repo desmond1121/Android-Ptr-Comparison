@@ -75,7 +75,7 @@ measure时间神奇的没掉了吧:)
 
 ###3. johannilsson's Ptr
 
-Scroll implementation: `View.setPadding()`
+Scroll implementation：初始时`setSelection(1)`隐藏顶部视图（使用这个下拉刷新空间注意将滚动栏隐藏，否则会露馅）。在拉下来超过header view的measure高度之前，均是`ListView`自有的滚动；在下拉超过header measure高度之后，对header使用`View.setPadding()`让header继续下移。
 
 trace snapshot:
 
@@ -83,7 +83,7 @@ trace snapshot:
 
 分析：
 
-通过顶视图调用`View.setPadding()`来实现的滑动，是会造成不断的`requestLayout()`!这就解释了为什么图中UI线程的蓝色块时间(measure时间)很明显。**当你在视图层级比较复杂的app中使用它时，下拉动作所造成的开销会非常明显，卡顿是必然结果。**
+通过顶视图调用`View.setPadding()`来实现的滑动，在下拉距离超过header高度后，会造成不断的`requestLayout()`!这就解释了为什么图中UI线程的蓝色块时间(measure时间)很明显。**当你在视图层级比较复杂的app中使用它时，下拉动作所造成的开销会非常明显，卡顿是必然结果。**
 
 ###4. Yalantis's Ptr
 
