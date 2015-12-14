@@ -71,8 +71,8 @@ trace snapshot:
 
 ![trace_liaohuqiu_new](/traces/liaohuqiu_new.PNG)
 
-measure时间神奇的没掉了吧:P
-  
+measure时间神奇的没掉了吧:)
+
 ###3. johannilsson's Ptr
 
 滑动实现方式：`View.setPadding()`
@@ -148,6 +148,18 @@ trace snapshot:
 ![trace_swipe](/traces/swipe_new.PNG)
 
 这样一来就不会每一次拉动，都会触发measure。若有同学知道这个`bringToFront()`在其中有其他我未探测到的功效，请issue指点:) 
+
+##总结
+
+|Repo|性能|拓展性|综合建议|
+|:--:|:--:|:--:|:--:|
+|[Android-PullToRefresh][3]|★★★★★|★★★|由于作者不再维护，无法在gradle中配置，顶部视图难以拓展，不建议放入工程中使用|
+|[android-Ultra-Pull-To-Refresh][1]|★★★★★|★★★★★|如之前分析，`PtrClassicFrameLayout`性能有缺陷，建议使用`PtrFrameLayout`。这套库自定义能力很强，性能没什么缺陷，建议使用。|
+|[android-pulltorefresh][5]|★|★|实现方式上有缺陷，拓展性也很差。优点就是代码非常简单，只能作为反面例子。|
+|[Phoenix][7]|★★★★★|★★|效果非常好，性能不错，可以作为学习与练手的对象。|
+|[FlyRefresh][9]|★★★★|★★|效果很新颖，可惜的是顶部视图计算动效上开销太大，可以作为学习与练手的对象。|
+|[SwipeRefreshLayout][11]|★★★|★★|官方出品，更新有保障，但是如上分析，其实性能上还是有点缺陷的，拓展性比较差，不建议放入工程中使用。|
+
 
 ##附录-知识点参考
 
