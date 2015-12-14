@@ -39,7 +39,7 @@
 
 ![trace_operation](trace_operation.gif)
 
-> 注：由于开源库Header大多无法直接放自定义视图，头部视图复杂程度不同，数据对比结果会有所偏差。
+> 注：由于开源库Header大多无法直接放自定义顶部视图，头部视图复杂程度不同，数据对比结果会有所偏差。
 
 ###1. Chris Banes's Ptr
 
@@ -89,7 +89,7 @@ trace snapshot:
 
 滑动实现方式：`Animation` + `View.topAndBottomOffset()`
 
-顶部动效实现方式：`Drawable`的`Canvas`中设置偏移量及缩放。
+顶部动效实现方式：`Drawable`的`draw()`中，为`Canvas`中设置偏移量及缩放。
 
 trace snapshot:
 
@@ -104,7 +104,7 @@ trace snapshot:
 顶部动效实现方式：
 
 - **飞机滑动** `ObjectAnimator`.
-- **背景缩放** 通过放大系数计算`Path`后进行draw.
+- **山体移动、树木弯曲** 通过移动距离计算山体偏移、树木轮廓，得出`Path`后进行draw.
 
 trace snapshot:
 
@@ -119,7 +119,7 @@ trace snapshot:
 顶部动效实现方式：
 
 - **上下移动** `View.bringToFront` + `View.offsetTopAndBottom()`.
-- **动效** 自定义Drawable。
+- **动效** 通过移动偏移量计算弧形曲线的角度、三角形的位置，使用`drawArc`, `drawTriangle`将他们画到`Canvas`上。
 
 trace snapshot:
 
