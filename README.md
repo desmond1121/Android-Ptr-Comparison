@@ -53,11 +53,15 @@ trace snapshot:
 
 ###2. liaohuqiu's Ptr
 
-滑动实现方式：`Scroller` + `View.post(Runnable)` + `View.offsetTopAndBottom()`
+滑动实现方式：触摸造成的下拉均是`View.offsetTopAndBottom()`实现的；在松手之后，触发`Scroller.startScroll()`计算回滚，使用`View.post(Runnable)`不停地监视`Scroller`的计算结果，从而实现视图变化(此处依然是`View.offsetTopAndBottom()`完成视图移动)。
+
+`Scroller` + `View.post(Runnable)` + `View.offsetTopAndBottom()`
 
 trace snapshot:
 
 ![trace_liaohuqiu](/traces/liaohuqiu.PNG)
+
+分析：
 
 这套开源库可以说是自定义功能最强的组件了，美中不足的就是在下拉状态变化的时候会有一阵measure时间。我查看了一下代码，发现是`PtrClassicFrameLayout`的顶部视图出了问题：
 
@@ -75,7 +79,7 @@ measure时间神奇的没掉了吧:)
 
 ###3. johannilsson's Ptr
 
-滑动实现方式：初始时`setSelection(1)`隐藏顶部视图（使用这个下拉刷新空间注意将滚动栏隐藏，否则会露馅）。在拉下来超过header view的measure高度之前，均是`ListView`自有的滚动；在下拉超过header measure高度之后，对header使用`View.setPadding()`让header继续下移。
+滑动实现方式：初始时`setSelection(1)`隐藏顶部视图（使用这个下拉刷新控件注意将滚动栏隐藏，否则会露馅）。在拉下来超过header view的measure高度之前，均是`ListView`自有的滚动；在下拉超过header measure高度之后，对header使用`View.setPadding()`让header继续下移。
 
 trace snapshot:
 
