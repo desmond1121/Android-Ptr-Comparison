@@ -154,7 +154,7 @@ trace snapshot:
 |Repo|性能|拓展性|综合建议|
 |:--:|:--:|:--:|:--:|
 |[Android-PullToRefresh][3]|★★★★★|★★★|由于作者不再维护，无法在gradle中配置，顶部视图难以拓展，不建议放入工程中使用|
-|[android-Ultra-Pull-To-Refresh][1]|★★★★★|★★★★★|如之前分析，`PtrClassicFrameLayout`性能有缺陷，建议使用`PtrFrameLayout`。这套库自定义能力很强，性能没什么缺陷，建议使用。|
+|[android-Ultra-Pull-To-Refresh][1]|★★★★★|★★★★★|如之前分析，`PtrClassicFrameLayout`性能有缺陷；建议使用`PtrFrameLayout`，性能较好。这套库自定义能力很强，建议使用。|
 |[android-pulltorefresh][5]|★|★|实现方式上有缺陷，拓展性也很差。优点就是代码非常简单，只能作为反面例子。|
 |[Phoenix][7]|★★★★★|★★|效果非常好，性能不错，可以作为学习与练手的对象。|
 |[FlyRefresh][9]|★★★★|★★|效果很新颖，可惜的是顶部视图计算动效上开销太大，可以作为学习与练手的对象。|
