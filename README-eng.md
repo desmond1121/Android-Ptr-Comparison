@@ -143,7 +143,7 @@ trace snapshot:
 
 看，它是会触发`View.requestLayout()`的！这个函数会造成的后果我们在之前已经解释了，它会造成大量的UI线程开销。实际上我认为这个函数是没有调用的必要的，`SwipeRefreshLayout`明明在重写`layout()`的时候，header会被layout到child之上，没有必要再`bringToFront()`。
 
-于是我copy了一份代码，将这一行注了（对应代码ptr-source-lib/src/main/java/com/android/support/SwipeRefreshLayout.java)，再次编译，measure时间确实没掉了，对功能毫无影响，性能却有了很大优化：
+于是我copy了一份代码，将这一行注了(对应代码ptr-source-lib/src/main/java/com/android/support/SwipeRefreshLayout.java)，再次编译，measure时间确实没掉了，对功能毫无影响，性能却有了很大优化：
 
 ![trace_swipe](/traces/swipe_new.PNG)
 
