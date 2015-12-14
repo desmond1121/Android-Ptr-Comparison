@@ -11,7 +11,7 @@ import com.markupartist.android.widget.PullToRefreshListView;
  * Created by desmond on 2015/12/9.
  */
 public class JohanPtrFragment extends AbstractFragment{
-    private static final String TAG = "JohanPtrFragment";
+    private static final String TAG = "JohanP trFragment";
     private PullToRefreshListView mListView;
 
     @Override

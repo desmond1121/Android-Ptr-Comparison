@@ -1,1 +1,1 @@
-include ':demo', ':ptr-libs'
+include ':ptr-comp-demo', ':ptr-sources-lib'

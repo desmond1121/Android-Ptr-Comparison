@@ -13,6 +13,7 @@ import com.desmond.ptrcomarison.fragments.ChrisBanesPtrFragment;
 import com.desmond.ptrcomarison.fragments.JohanPtrFragment;
 import com.desmond.ptrcomarison.fragments.LiaohuqiuPtrFragment;
 import com.desmond.ptrcomarison.fragments.FlyRefreshPtrFragment;
+import com.desmond.ptrcomarison.fragments.SwipeFragment;
 import com.desmond.ptrcomarison.fragments.YalantisPtrFragment;
 import com.squareup.picasso.Picasso;
 
@@ -42,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         mFgList.add(new JohanPtrFragment());
         mFgList.add(new YalantisPtrFragment());
         mFgList.add(new FlyRefreshPtrFragment());
+        mFgList.add(new SwipeFragment());
     }
 
     @Override
