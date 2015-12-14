@@ -143,7 +143,7 @@ trace snapshot:
 
 看，它是会触发`requestLayout()`的！
 
-但是这个控件的代码中，明明在重写layout的时候，header会被layout到child之上，没有必要再`bringToFront`。于是我copy了一份代码，将这一行注了（对应代码ptr-source-lib/src/main/java/com/android/support/SwipeRefreshLayout.java)，再次编译，发现measure时间没掉了，对功能毫无影响：
+但是这个控件的代码中，明明在重写layout的时候，header会被layout到child之上，没有必要再`bringToFront`。于是我copy了一份代码，将这一行注了（对应代码ptr-source-lib/src/main/java/com/android/support/SwipeRefreshLayout.java)，再次编译，measure时间确实没掉了，对功能毫无影响，性能却有了很大优化：
 
 ![trace_swipe](/traces/swipe_new.PNG)
 
