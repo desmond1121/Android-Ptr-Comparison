@@ -143,7 +143,7 @@ trace snapshot:
 
 看，它是会触发`requestLayout()`的！
 
-但是这个控件的代码中，明明在重写layout的时候，header会被layout到child之上，没有必要再`bringToFront`。于是我copy了一份代码，将这一行注了（对应代码ptr-source-lib/src/main/java/com/android/support/SwipeRefreshLayout.java)，再次编译，发现measure时间没掉了，对功能毫无影响：
+但是看这个控件的代码，明明在重写layout过程中，header会被layout到child之上，没有必要再`bringToFront`。于是我copy了一份代码，将这一行注了（对应代码ptr-source-lib/src/main/java/com/android/support/SwipeRefreshLayout.java)，再次编译，发现measure时间没掉了，对功能毫无影响：
 
 ![trace_swipe](/traces/swipe_new.PNG)
 
@@ -156,7 +156,7 @@ trace snapshot:
 |[Android-PullToRefresh][3]|★★★★★|★★★|由于作者不再维护，无法在gradle中配置，顶部视图难以拓展，不建议放入工程中使用|
 |[android-Ultra-Pull-To-Refresh][1]|★★★★★|★★★★★|如之前分析，`PtrClassicFrameLayout`性能有缺陷；建议使用`PtrFrameLayout`，性能较好。这套库自定义能力很强，建议使用。|
 |[android-pulltorefresh][5]|★|★|实现方式上有缺陷，拓展性也很差。优点就是代码非常简单，只能作为反面例子。|
-|[Phoenix][7]|★★★★★|★★|效果非常好，性能不错，可以作为学习与练手的对象。|
+|[Phoenix][7]|★★★★★|★★|效果非常好，性能不错，可惜比较难拓展顶部视图，可以作为学习与练手的对象。|
 |[FlyRefresh][9]|★★★★|★★|效果很新颖，可惜的是顶部视图计算动效上开销太大，可以作为学习与练手的对象。|
 |[SwipeRefreshLayout][11]|★★★|★★|官方出品，更新有保障，但是如上分析，其实性能上还是有点缺陷的，拓展性比较差，不建议放入工程中使用。|
 
