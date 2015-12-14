@@ -29,7 +29,7 @@
 |[Android-PullToRefresh][3]|×|√|×|移动比固定1/2|
 |[android-Ultra-Pull-To-Refresh][1]|√|×|√|√|
 |[android-pulltorefresh][5]|×|×|×|移动比固定1/1.7|
-|[Phoenix][7]|√|×|×|×|
+|[Phoenix][7]|√|×|×|移动比固定1/2|
 |[FlyRefresh][9]|√|×|×|×|
 |[SwipeRefreshLayout][11]|√|×|×|移动比固定1/2|
 
@@ -89,7 +89,7 @@ trace snapshot:
 
 ###4. Yalantis's Ptr
 
-滑动实现方式：`Animation` + `View.topAndBottomOffset()`
+滑动实现方式：通过`View.topAndBottomOffset()`移动视图，在松手之后启动一个`Animation`执行回滚动画，内容视图的回滚使用`View.setPadding()`实现。
 
 顶部动效实现方式：`Drawable`的`draw()`中，为`Canvas`中设置偏移量及缩放。
 
@@ -98,6 +98,12 @@ trace snapshot:
 ![trace_yalantis](/traces/yalantis.PNG)
 
 分析：此开源库动画效果非常柔和，且顶部视图全部是通过draw去更新，不会造成第三个开源库那样的大开销问题。可惜的是比较难以去自定义顶部视图，不好在大型线上产品中使用，不过这个开源库是一个好的练手与学习的对象。由于顶部动效实现开销不大，它的性能同样非常好。
+
+它的回滚实现可能有问题，与是我特地测了一下松手回滚的trace，一看确实measure时间非常可观：
+
+![trace_yalantis_scroll_back](/traces/yalantis_back.PNG)
+
+**待优化**
 
 ###5. race604's Ptr
 
