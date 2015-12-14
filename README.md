@@ -125,7 +125,7 @@ trace snapshot:
 
 ![trace_swipe](/traces/swipe.PNG)
 
-分析：官方的下拉刷新组件非常简洁，仅一个自定义View与Drawable会产生动画。但是为什么每次的移动都会有一段明显的measure时间呢？我研究了一下代码，发现罪魁祸首是`View.bringToFront`，仔细看这个源码，它会走到下面这段代码中：
+分析：官方的下拉刷新组件，动画十分美观简洁，API构造清晰明了。但是为什么每次的移动都会有一段明显的measure时间呢？我研究了一下代码，发现罪魁祸首是`View.bringToFront`，仔细看这个源码，它会走到下面这段代码中：
 
 `ViewGroup.java`
 ```
@@ -141,9 +141,9 @@ trace snapshot:
     }
 ```
 
-看，它是会触发`requestLayout()`的！
+看，它是会触发`View.requestLayout()`的！这个函数会造成的后果我们在之前已经解释了，它会造成大量的UI线程开销。实际上我认为这个函数是没有调用的必要的，`SwipeRefreshLayout`明明在重写`layout()`的时候，header会被layout到child之上，没有必要再`bringToFront()`。
 
-但是这个控件的代码中，明明在重写layout的时候，header会被layout到child之上，没有必要再`bringToFront`。于是我copy了一份代码，将这一行注了（对应代码ptr-source-lib/src/main/java/com/android/support/SwipeRefreshLayout.java)，再次编译，measure时间确实没掉了，对功能毫无影响，性能却有了很大优化：
+于是我copy了一份代码，将这一行注了（对应代码ptr-source-lib/src/main/java/com/android/support/SwipeRefreshLayout.java)，再次编译，measure时间确实没掉了，对功能毫无影响，性能却有了很大优化：
 
 ![trace_swipe](/traces/swipe_new.PNG)
 
