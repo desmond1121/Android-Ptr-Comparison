@@ -43,19 +43,17 @@
 
 ###1. Chris Banes's Ptr
 
-滑动实现方式：`View.post(Runnable)` + `View.scrollTo()` 
+滑动实现方式：触摸造成的下拉均是`View.scrollTo()`实现的；在松手之后，`View.post(Runnable)`触发`Runnable`执行回滚动画，在滑回原处之前不断`post`自己，并配合`Interpolator1`执行`scrollTo()`进行滚动。 
 
 trace snapshot:
 
 ![trace_chrisbanes](/traces/chrisbanes.PNG)
 
-作为Github上星星数最多的Android下拉刷新控件，从性能上看（渲染时间构成）几乎没有什么明显的缺点。可惜的是作者已经不再维护，并且gradle中也无法使用。在本次demo这类层级比较简单的环境中，几乎都达到了60fps，可以与后面的trace对比。
+作为Github上星星数最多的Android下拉刷新控件，从性能上看（渲染时间构成）几乎没有什么明显的缺点。可惜的是作者已经不再维护，顶部视图的扩展性并且gradle中也无法使用。在本次demo这类层级比较简单的环境中，几乎都达到了60fps，可以与后面的trace对比。
 
 ###2. liaohuqiu's Ptr
 
 滑动实现方式：触摸造成的下拉均是`View.offsetTopAndBottom()`实现的；在松手之后，触发`Scroller.startScroll()`计算回滚，使用`View.post(Runnable)`不停地监视`Scroller`的计算结果，从而实现视图变化(此处依然是`View.offsetTopAndBottom()`完成视图移动)。
-
-`Scroller` + `View.post(Runnable)` + `View.offsetTopAndBottom()`
 
 trace snapshot:
 
@@ -63,7 +61,7 @@ trace snapshot:
 
 分析：
 
-这套开源库可以说是自定义功能最强的组件了，美中不足的就是在下拉状态变化的时候会有一阵measure时间。我查看了一下代码，发现是`PtrClassicFrameLayout`的顶部视图出了问题：
+这套开源库可以说是自定义功能最强的组件了，你可以实现`PtrUIHandler`并将其add到`PtrFrameLayout`完美地与下拉刷新事件适配。美中不足的就是在下拉状态变化的时候会有一阵measure时间。我查看了一下代码，发现是`PtrClassicFrameLayout`的顶部视图出了问题：
 
 ![liaohuqiu_header](/liaohuqiu_ptr_header.PNG)
 
