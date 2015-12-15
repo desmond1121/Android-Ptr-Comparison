@@ -99,7 +99,7 @@ trace snapshot:
 
 分析：此开源库动画效果非常柔和，且顶部视图全部是通过draw去更新，不会造成第三个开源库那样的大开销问题。可惜的是比较难以去自定义顶部视图，不好在大型线上产品中使用，不过这个开源库是一个好的练手与学习的对象。由于顶部动效实现开销不大，它的性能同样非常好。
 
-它的回滚动画时调用的`setPadding()`可能有问题，与是我特地测了一下松手回滚的trace，一看确实measure时间非常可观：
+它的回滚动画时调用的`View.setPadding()`可能有问题，与是我特地测了一下松手回滚的trace，一看确实measure时间非常可观：
 
 ![trace_yalantis_scroll_back](/traces/yalantis_back.PNG)
 
