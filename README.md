@@ -49,6 +49,8 @@ trace snapshot:
 
 ![trace_chrisbanes](/traces/chrisbanes.PNG)
 
+**分析**：
+
 作为Github上星星数最多的Android下拉刷新控件，从性能上看（渲染时间构成）几乎没有什么明显的缺点。可惜的是作者已经不再维护，顶部视图的扩展性并且gradle中也无法使用。在本次demo这类层级比较简单的环境中，几乎都达到了60fps，可以与后面的trace对比。
 
 ###2. liaohuqiu's Ptr
@@ -59,7 +61,7 @@ trace snapshot:
 
 ![trace_liaohuqiu](/traces/liaohuqiu.PNG)
 
-分析：
+**分析**：
 
 这套开源库可以说是自定义功能最强的组件了，你可以实现`PtrUIHandler`并将其add到`PtrFrameLayout`完美地与下拉刷新事件适配。美中不足的就是在下拉状态变化的时候会有一阵measure时间。我查看了一下代码，发现是`PtrClassicFrameLayout`的顶部视图出了问题：
 
@@ -83,7 +85,7 @@ trace snapshot:
 
 ![trace_johan](/traces/johan.PNG)
 
-分析：
+**分析**：
 
 通过顶视图调用`View.setPadding()`来实现的滑动，在下拉距离超过header高度后，会造成不断的`requestLayout()`!这就解释了为什么图中UI线程的蓝色块时间(measure时间)很明显。**当你在视图层级比较复杂的app中使用它时，下拉动作所造成的开销会非常明显，卡顿是必然结果。**
 
@@ -97,7 +99,9 @@ trace snapshot:
 
 ![trace_yalantis](/traces/yalantis.PNG)
 
-分析：此开源库动画效果非常柔和，且顶部视图全部是通过draw去更新，不会造成第三个开源库那样的大开销问题。可惜的是比较难以去自定义顶部视图，不好在大型线上产品中使用，不过这个开源库是一个好的练手与学习的对象。由于顶部动效实现开销不大，它的性能同样非常好。
+**分析**：
+
+此开源库动画效果非常柔和，且顶部视图全部是通过draw去更新，不会造成第三个开源库那样的大开销问题。可惜的是比较难以去自定义顶部视图，不好在线上产品中使用，不过这个开源库是一个好的练手与学习的对象。由于顶部动效实现开销不大，它的性能同样非常好。
 
 它的回滚动画时调用的`View.setPadding()`可能会造成measure开销比较大，于是我特地测了一下松手回滚的trace，一看确实measure时间非常可观：
 
@@ -122,7 +126,7 @@ trace snapshot:
 
 ![trace_flyrefresh](/traces/flyrefresh.PNG)
 
-分析：每次拖动都会重新计算背景"山体"与"树木"的`Path`，造成了draw时间过长。效果不错，也是一个好的学习对象，相比`Yalantis`的下拉刷新性能上就差一些了，它的draw中的计算量太多。使用起来疑似有bug：拖动到顶部，无法再往上拖动，并且会出现拖动异常。
+**分析**：每次拖动都会重新计算背景"山体"与"树木"的`Path`，造成了draw时间过长。效果不错，也是一个好的学习对象，相比`Yalantis`的下拉刷新性能上就差一些了，它的draw中的计算量太多。使用起来疑似有bug：拖动到顶部，无法再往上拖动，并且会出现拖动异常。
 
 ###6. SwipeRefreshLayout
 
@@ -137,7 +141,7 @@ trace snapshot:
 
 ![trace_swipe](/traces/swipe.PNG)
 
-分析：官方的下拉刷新组件，动画十分美观简洁，API构造清晰明了。但是为什么每次的移动都会有一段明显的measure时间呢？我研究了一下代码，发现罪魁祸首是`View.bringToFront`，仔细看这个源码，它会走到下面这段代码中：
+**分析**：官方的下拉刷新组件，动画十分美观简洁，API构造清晰明了。但是为什么每次的移动都会有一段明显的measure时间呢？我研究了一下代码，发现罪魁祸首是`View.bringToFront`，仔细看这个源码，它会走到下面这段代码中：
 
 `ViewGroup.java`
 ```
