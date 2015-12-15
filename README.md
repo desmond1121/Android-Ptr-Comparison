@@ -111,7 +111,7 @@ trace snapshot:
 
 ![yalantis_padding](/demo_gif/yalantis_padding.gif)
 
-可以考虑用一些其他的替代方法实现padding一致。
+实际上，由于这个库是一个嵌套视图，可以尝试在父视图的`onLayout`中进行处理，而不要在子视图中每次滑动事件都调用`setPadding`，会造成很大的开销。
 
 ###5. race604's Ptr
 
