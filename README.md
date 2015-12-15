@@ -18,7 +18,7 @@
 |[Android-PullToRefresh][3]|不支持，只能改代码。<br/>由于仅支持其中实现的`LoadingLayout`作为顶视图，改代码实现自定义工作量较大。|任意视图，内置:`GridView`<br/>`ListView`,`HorizontalScrollView`<br/> `ScrollView` ,`WebView`|
 |[android-Ultra-Pull-To-Refresh][1]|任意视图。<br/> 通过继承`PtrUIHandler`并调用<br/>`PtrFrameLayout.addPtrUIHandler()`得到最大支持。|任意视图|
 |[android-pulltorefresh][5]|不支持，只能改代码。<br/> 代码仅一个`ListView`，耦合度太高，改动工作量较大。|无法扩展，自身为`ListView`|
-|[Phoenix][7]|不支持，此控件特点就是顶部视图及动画。|任意视图|
+|[Phoenix][7]|不支持，此控件特点就是顶部视图及动画。|任意视图，只显示最后一个嵌套的子视图。|
 |[FlyRefresh][9]|不支持，此控件特点就是顶部视图及动画。|任意视图|
 |[SwipeRefreshLayout][11]|不支持，固定为Material风格|任意视图|
 
@@ -89,7 +89,7 @@ trace snapshot:
 
 ###4. Yalantis's Ptr
 
-滑动实现方式：通过`View.topAndBottomOffset()`移动视图，在松手之后启动一个`Animation`执行回滚动画，内容视图的回滚使用`View.setPadding()`实现。
+滑动实现方式：通过`View.topAndBottomOffset()`移动视图，在松手之后启动一个`Animation`执行回滚动画，内容视图的移动也使用`View.offsetTopAndBottom()`实现，但是为了保证内容视图的`padding`在移动视图之后与布局文件中的`padding`一致，它额外调用了`View.setPadding()`实时计算与设置padding。
 
 顶部动效实现方式：`Drawable`的`draw()`中，为`Canvas`中设置偏移量及缩放。
 
@@ -99,11 +99,11 @@ trace snapshot:
 
 分析：此开源库动画效果非常柔和，且顶部视图全部是通过draw去更新，不会造成第三个开源库那样的大开销问题。可惜的是比较难以去自定义顶部视图，不好在大型线上产品中使用，不过这个开源库是一个好的练手与学习的对象。由于顶部动效实现开销不大，它的性能同样非常好。
 
-它的回滚实现可能有问题，与是我特地测了一下松手回滚的trace，一看确实measure时间非常可观：
+它的回滚动画时调用的`setPadding()`可能有问题，与是我特地测了一下松手回滚的trace，一看确实measure时间非常可观：
 
 ![trace_yalantis_scroll_back](/traces/yalantis_back.PNG)
 
-**待优化**
+确实它如果要保证展示内容视图的`padding`与布局文件中一致，是必须这么做（调用`View.setPadding()`）的，因为向下移动视图会影响底部的`padding`。但是很有意思，它向下移动的时候没有这么设置，拉下来的时候底部padding就没了（你可以在demo的`YalantisPtrFragment`的布局中进行修改查看是否是这样）。但是回滚动画的时候才这么操作，可以考虑是否有必要去做这件事，或者用一些其他的替代方法实现`padding`一致。
 
 ###5. race604's Ptr
 
