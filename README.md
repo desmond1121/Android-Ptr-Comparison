@@ -91,7 +91,7 @@ trace snapshot:
 
 滑动实现方式：通过`View.topAndBottomOffset()`移动视图，在松手之后启动一个`Animation`执行回滚动画，内容视图的移动也使用`View.offsetTopAndBottom()`实现，但是为了保证内容视图的`padding`在移动视图之后与布局文件中的`padding`一致，它额外调用了`View.setPadding()`实时计算与设置padding。
 
-顶部动效实现方式：`Drawable`的`draw()`中，为`Canvas`中设置偏移量及缩放。
+顶部动效实现方式：`Drawable`的`draw()`中，为`Canvas`中设置“太阳”偏移量及背景缩放。
 
 trace snapshot:
 
@@ -103,7 +103,11 @@ trace snapshot:
 
 ![trace_yalantis_scroll_back](/traces/yalantis_back.PNG)
 
-确实它如果要保证展示内容视图的`padding`与布局文件中一致，是必须这么做（调用`View.setPadding()`）的，因为向下移动视图会影响底部的`padding`。但是很有意思，它向下移动的时候没有这么设置，拉下来的时候底部padding就没了（你可以在demo的`YalantisPtrFragment`的布局中进行修改查看是否是这样）。但是回滚动画的时候才这么操作，可以考虑是否有必要去做这件事，或者用一些其他的替代方法实现`padding`一致。
+确实它如果要保证展示内容视图的`padding`与布局文件中一致，是必须这么做的（调用`View.setPadding()`），因为通过`View.offsetTopAndBottom()`向下移动视图会影响底部的`padding`。但是很有意思，它向下移动的时候没有这么设置，拉下来的时候底部padding就没了。回滚动画的时候才设了`padding`，就显得没那么必要了。我在demo中也进行了实践，确实是这样的：
+
+![yalantis_padding](/demo_gif/yalantis_padding.gif)
+
+可以考虑用一些其他的替代方法实现`padding`一致。
 
 ###5. race604's Ptr
 
