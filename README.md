@@ -63,7 +63,7 @@ trace snapshot:
 
 **分析**：
 
-这套开源库可以说是自定义功能最强的组件了，你可以实现`PtrUIHandler`并将其add到`PtrFrameLayout`完美地与下拉刷新事件适配。美中不足的就是在下拉状态变化的时候会有一阵measure时间。我查看了一下代码，发现是`PtrClassicFrameLayout`的顶部视图出了问题：
+这套开源库可以说是自定义功能最强的组件了，你可以实现`PtrUIHandler`并将其add到`PtrFrameLayout`完美地与下拉刷新事件适配。美中不足的就是在下拉状态变化的时候会有一阵measure时间。我查看了一下代码，发现是`PtrClassicFrameLayout`（作者实现的集成默认下拉视图的layout）的顶部视图出了问题：
 
 ![liaohuqiu_header](/liaohuqiu_ptr_header.PNG)
 
