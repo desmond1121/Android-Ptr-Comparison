@@ -283,7 +283,7 @@ public class PullToRefreshView extends ViewGroup {
             animateOffsetToStartPosition();
         }
         mCurrentOffsetTop = mTarget.getTop();
-        mTarget.setPadding(mTargetPaddingLeft, mTargetPaddingTop, mTargetPaddingRight, mTotalDragDistance);
+//        mTarget.setPadding(mTargetPaddingLeft, mTargetPaddingTop, mTargetPaddingRight, mTotalDragDistance);
     }
 
     private final Animation mAnimateToStartPosition = new Animation() {
@@ -315,7 +315,7 @@ public class PullToRefreshView extends ViewGroup {
 
         mCurrentDragPercent = targetPercent;
         mBaseRefreshView.setPercent(mCurrentDragPercent, true);
-        mTarget.setPadding(mTargetPaddingLeft, mTargetPaddingTop, mTargetPaddingRight, mTargetPaddingBottom + targetTop);
+//        mTarget.setPadding(mTargetPaddingLeft, mTargetPaddingTop, mTargetPaddingRight, mTargetPaddingBottom + targetTop);
         setTargetOffsetTop(offset, false);
     }
 
