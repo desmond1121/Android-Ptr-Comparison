@@ -43,7 +43,7 @@
 
 ###1. Chris Banes's Ptr
 
-滑动实现方式：触摸造成的下拉均是`View.scrollTo()`实现的；在松手之后，`View.post(Runnable)`触发`Runnable`执行回滚动画，在滑回原处之前不断`post`自己，并配合`Interpolator1`执行`scrollTo()`进行滚动。 
+滑动实现方式：触摸造成的下拉均是`View.scrollTo()`实现的；在松手之后，`View.post(Runnable)`触发`Runnable`执行回滚动画，在滑回原处之前不断`post`自己，并配合`Interpolator`执行`scrollTo()`进行滚动。 
 
 trace snapshot:
 
