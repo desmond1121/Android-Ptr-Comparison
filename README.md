@@ -119,10 +119,6 @@ trace snapshot:
 
 ![yalantis_back_trace_new](/traces/yalantis_back_new.PNG)
 
-改动后的样子，上下拉动时padding不会变动。不过每次回滚的时候顶部会多往里面滚一点，还需作者针对issue完善：
-
-![yalantis_padding_new](/demo_gif/yalantis_padding_new.gif)
-
 ###5. race604's Ptr
 
 滑动实现方式：`View.topAndBottomOffset()`
