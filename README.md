@@ -119,7 +119,7 @@ trace snapshot:
 
 ![yalantis_back_trace_new](/traces/yalantis_back_new.PNG)
 
-改动后的样子，每次回滚的时候顶部会多往里面滚一点，还需完善：
+改动后的样子，上下拉动时padding不会变动。不过每次回滚的时候顶部会多往里面滚一点，还需作者针对issue完善：
 
 ![yalantis_padding_new](/demo_gif/yalantis_padding_new.gif)
 
@@ -144,7 +144,7 @@ trace snapshot:
 
 顶部动效实现方式：
 
-- **上下移动** `View.bringToFront` + `View.offsetTopAndBottom()`.
+- **上下移动** `View.bringToFront()` + `View.offsetTopAndBottom()`.
 - **动效** 通过移动偏移量计算弧形曲线的角度、三角形的位置，使用`drawArc`, `drawTriangle`将他们画到`Canvas`上。
 
 trace snapshot:
@@ -167,7 +167,7 @@ trace snapshot:
     }
 ```
 
-看，它是会触发`View.requestLayout()`的！这个函数会造成的后果我们在之前已经解释了，它会造成大量的UI线程开销。实际上我认为这个函数是没有调用的必要的，`SwipeRefreshLayout`明明在重写`layout()`的时候，header会被layout到child之上，没有必要再`bringToFront()`。
+看，它是会触发`View.requestLayout()`的！这个函数会造成的后果我们在之前已经解释了，它会造成大量的UI线程开销。实际上我认为这个函数是没有调用的必要的，`SwipeRefreshLayout`明明在重写`onLayout()`的时候，header会被layout到child之上，没有必要再`bringToFront()`。
 
 于是我copy了一份代码，将这一行注了(对应代码ptr-source-lib/src/main/java/com/android/support/SwipeRefreshLayout.java)，再次编译，measure时间确实没掉了，对功能毫无影响，性能却有了很大优化：
 
