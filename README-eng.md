@@ -53,21 +53,19 @@ trace snapshot:
 
 ![trace_liaohuqiu](/traces/liaohuqiu.PNG)
 
-**分析**：
+**Analysis**：
 
-这套开源库可以说是自定义功能最强的组件了，你可以实现`PtrUIHandler`并将其add到`PtrFrameLayout`完美地与下拉刷新事件适配。美中不足的就是在下拉状态变化的时候会有一阵measure时间。我查看了一下代码，发现是`PtrClassicFrameLayout`的顶部视图出了问题：
+This library could be the best in expansion ability. You can make your header implement `PtrUIHandler` and add it to `PtrFrameLayout`。I've noticed that "measure" time period take significant time when "pull to refresh" state change. After working around it's source I found `PtrClassicFrameLayout`'s header take responsibility for this. Let's look at it's layout resource:
 
 ![liaohuqiu_header](/liaohuqiu_ptr_header.PNG)
 
-看！都是`wrap_content`，那么当里面的内容变化的时候，是会触发`View.requestLayout()`的。不要小看这一个子视图的小操作，一个`requestLayout()`大概是这么一个流程：`View.requestLayout()`->`ViewParent.requestLayout()`->...->`ViewRootImpl.requestLayout()`->`ViewRootImpl.doTraversal()`=>**MEASURE**(ViewGroup)=>**MEASURE**(ChildView of ViewGroup)
+So many `wrap_content`! That would cause `View.requestLayout()`. Don't look down this little operation of a little view! `View.requestLayout()` would walk through this route：`View.requestLayout()`->`ViewParent.requestLayout()`->...->`ViewRootImpl.requestLayout()`->`ViewRootImpl.doTraversal()`=>**MEASURE**(ViewGroup)=>**MEASURE**(ChildView of ViewGroup)!
 
-在层级复杂的时候（大部分互联网产品由于复杂的产品需求嵌套都会比较多），它会层层向上调用，将measure时间放大至一个可观的层级。下拉刷新界面的卡顿由此而来。
+It would cost tremendous time in measure when the app has complicated view hierarchy. That means your "pull down" action would be not so smooth.
 
-我修改了一下，将其全部变为固定高度、宽度，之后的trace如下：
+I made all `layout_width` and `layout_height` be a fixed dimension, and "measure" time disappear in trace magically! systrace after modify:
 
 ![trace_liaohuqiu_new](/traces/liaohuqiu_new.PNG)
-
-measure时间神奇的没掉了吧:)
 
 ###3. johannilsson's Ptr
 

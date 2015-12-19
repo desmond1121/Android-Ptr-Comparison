@@ -107,15 +107,13 @@ trace snapshot:
 
 ![trace_yalantis_scroll_back](/traces/yalantis_back.PNG)
 
-确实它如果要保证展示子视图的padding与布局文件中一致，是必须这么做的（调用`View.setPadding()`），因为通过`View.offsetTopAndBottom()`向下移动子视图会影响子视图设置好的底部padding。但是很有意思，它向下移动的时候没有这么设置，拉下来的时候底部padding就没了。回滚动画的时候才设了padding，就显得没那么必要了。我在demo中也进行了实践，确实是这样的：
+确实它如果要保证展示内容视图的padding与布局文件中一致，是必须这么做的（调用`View.setPadding()`），因为通过`View.offsetTopAndBottom()`向下移动子视图时，子视图的内容整个移动下来，在视觉上会影响它设置好的底部padding。但是很有意思，它向下移动的时候没有这么设置，拉下来的时候底部padding就没了。回滚动画的时候才设了padding，就显得没那么必要了。我在demo中也进行了实践，确实是这样的：
 
 ![yalantis_padding](/demo_gif/yalantis_padding.gif)
 
-实际上，由于这个库是一个嵌套视图，可以尝试在父视图的`onLayout()`中对父、子视图的padding属性一起进行处理。不要每次拉动都手动设置padding，这样会造成大量measure开销。
+我暂时也没想到什么方法可以更好地处理子视图padding问题。但实际上，由于这个库是一个嵌套视图，并且只会有一个内容视图显示出来，可以尝试放弃对子视图padding的处理。如果需要，可以使用父视图的padding来代替，这样是最完美的效果。子视图再怎么移动，也会被父视图已经设好的padding局限住。由此一来padding就不会被影响，同时提高了性能。不过这样一来牺牲了子视图padding的设置，在使用的时候可以根据需要各取所需。
 
-我粗略的做了一点点改动，将它的`setPadding()`注释掉了，性能就有了很大提高。不过这样一来代码逻辑就有点问题，还需要再做改动，已经跟作者提出issue。
-
-改动后松手回滚trace，已经没有了measure时间：
+我粗略的做了一点点改动，将它的`setPadding()`注释掉了。不过由于该库的一些其他实现逻辑，导致会有一些问题，此处仅看性能上的变化，改动后松手回滚trace，已经没有了measure时间：
 
 ![yalantis_back_trace_new](/traces/yalantis_back_new.PNG)
 

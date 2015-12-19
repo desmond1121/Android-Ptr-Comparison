@@ -5,6 +5,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
+        android:background="#aaaaff"
         android:layout_height="100dp">
         <ImageView
             android:id="@+id/image"
