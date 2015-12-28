@@ -49,43 +49,67 @@
 
 ###1. Chris Banes' ptr
 
-触屏分发处理：
+**触屏分发处理**：
 
-触屏事件示例：
+- `dispatchTouchEvent`
+- `onInterceptTouchEvent`
+- `onTouchEvent`
+
+**触屏事件示例**：
 
 ![demo_gif](chrisbanes_scroll.gif)
 
 ###2. Liaohuqiu's ptr
 
-触屏分发处理：
+**触屏分发处理**：
 
-触屏事件示例：
+- `dispatchTouchEvent`
+- `onInterceptTouchEvent`
+- `onTouchEvent`
+
+**触屏事件示例**：
 
 ![demo_gif](liaohuqiu_scroll.gif)
 
 ###3. Johannilsson's ptr
 
-触屏分发处理：
+**触屏分发处理**：
 
-触屏事件示例：同Chris banes' ptr
+- `dispatchTouchEvent`
+- `onInterceptTouchEvent`
+- `onTouchEvent`
+
+**触屏事件示例**：同Chris banes' ptr
 
 ###4. Yalantis's ptr
 
-触屏分发处理：
+**触屏分发处理**：
 
-触屏事件示例：同Chris banes' ptr
+- `dispatchTouchEvent`
+- `onInterceptTouchEvent`
+- `onTouchEvent`
+
+**触屏事件示例**：同Chris banes' ptr
 
 ###5. race604's ptr
 
-触屏分发处理：
+**触屏分发处理**：
 
-触屏事件示例：同Chris banes' ptr
+- `dispatchTouchEvent`
+- `onInterceptTouchEvent`
+- `onTouchEvent`
+
+**触屏事件示例**：同Chris banes' ptr
 
 ###6. SwipeRefreshLayout
 
-触屏分发处理：
+**触屏分发处理**：
 
-触屏事件示例：同Liaohuqiu' ptr
+- `dispatchTouchEvent`
+- `onInterceptTouchEvent`
+- `onTouchEvent`
+
+**触屏事件示例**：同Liaohuqiu's ptr
 
 ##性能分析
 
