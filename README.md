@@ -1,6 +1,16 @@
 #安卓下拉刷新开源库对比
 目前仅比对github上star数>1500的下拉刷新开源库，在比较完成之后可能会加入其它有代表性的库.
 
+##目录
+
+- [对比的开源库列表及简介](#Repo)
+- [拓展性](#拓展性)
+- [易用性](#易用性)
+- [触屏事件分发](#触屏事件分发)
+- [性能分析](#性能分析)
+- [总结](#总结)
+- [附录-知识点参考](#附录-知识点参考)
+
 ##Repo
 |Repo|Owner|Star<br/>(2015.12.5)|version|Snap shot|
 |:--:|:--:|:------:|:---:|:--:|
@@ -32,6 +42,50 @@
 |[Phoenix][7]|√|×|×|移动比固定1/2|
 |[FlyRefresh][9]|√|×|×|×|
 |[SwipeRefreshLayout][11]|√|×|×|移动比固定1/2|
+
+##触屏事件分发
+
+通过在`ListView`内部加入横向滑动对象来分析触屏滑动。
+
+###1. Chris Banes' ptr
+
+触屏分发处理：
+
+触屏事件示例：
+
+![demo_gif](chrisbanes_scroll.gif)
+
+###2. Liaohuqiu's ptr
+
+触屏分发处理：
+
+触屏事件示例：
+
+![demo_gif](liaohuqiu_scroll.gif)
+
+###3. Johannilsson's ptr
+
+触屏分发处理：
+
+触屏事件示例：同Chris banes' ptr
+
+###4. Yalantis's ptr
+
+触屏分发处理：
+
+触屏事件示例：同Chris banes' ptr
+
+###5. race604's ptr
+
+触屏分发处理：
+
+触屏事件示例：同Chris banes' ptr
+
+###6. SwipeRefreshLayout
+
+触屏分发处理：
+
+触屏事件示例：同Liaohuqiu' ptr
 
 ##性能分析
 
