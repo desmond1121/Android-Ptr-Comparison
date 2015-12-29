@@ -55,10 +55,10 @@
 
 - `dispatchTouchEvent` 没有处理。
 - `onInterceptTouchEvent`
-    + `DOWN` 不拦截，若可以拉动，更新拉动状态（`mIsBeingDragged`）为`false`；
+    + `DOWN` 不拦截。若可以拉动，更新拉动状态（`mIsBeingDragged`）为`false`；
     + `MOVE` 正在更新、被拉动状态下都会拦截（返回`true`）；
     + `UP/CANCEL` 不拦截，更新被拉动状态为false。
-- `onTouchEvent` (此阶段处理UI拖动逻辑)
+- `onTouchEvent` （此阶段处理UI拖动逻辑）
     + `DOWN` 此时可以拉动刷新时消耗该event（返回`true`），否则返回`false`；
     + `MOVE` 被拉动时消耗该event（返回`true`），否则返回`false`；
     + `UP/CANCEL` 被拉动时，消耗该event（返回`true`），否则返回`false`。
@@ -78,7 +78,7 @@
 
 **触屏分发**：
 
-- `dispatchTouchEvent` (此阶段处理UI拖动逻辑)
+- `dispatchTouchEvent` （此阶段处理UI拖动逻辑）
     + `DOWN` 手动调用`super.dispatchTouchEvent()`将事件传递下去，但之后直接返回`true`，保证后续能够处理到move、up、cancel事件；
     + `MOVE` 被拉动时直接返回`true`，不向下传递事件；没有被拉动、无法触发拉动时不处理，传递给下层view。若设置了`disableWhenHorizontalMove`，则在没有被拉动时的横滑操作直接传递给下层view；
     + `UP/CANCEL` 如果被拖动了，则直接返回`true`，截断了此次事件，并手动向下层传递一个cancel事件；否则直接传递给下层view。
@@ -95,45 +95,14 @@ dispatch阶段直接处理了分发逻辑与UI移动逻辑。只要它自身或�
 
 ![liaohuqiu_scroll](/demo_gif/liaohuqiu_scroll.gif)
 
-###3. Johannilsson's ptr
+###3.其他库
 
-**触屏分发处理**：
+基本的做法就是如上两种，由于`ListView`一定会消耗事件，如果是**嵌套视图**的话必须重写`onInterceptTouchEvent`+`onTouchEvent`或者直接重写`dispatchTouchEvent`才能够保证正确接收并处理到触摸事件。两种方法的特点已经在上面分别列出，下面简单列出余下库的做法：
 
-- `dispatchTouchEvent`
-- `onInterceptTouchEvent`
-- `onTouchEvent`
-
-**触屏事件示例**：同Chris banes' ptr
-
-###4. Yalantis's ptr
-
-**触屏分发处理**：
-
-- `dispatchTouchEvent`
-- `onInterceptTouchEvent`
-- `onTouchEvent`
-
-**触屏事件示例**：同Chris banes' ptr
-
-###5. race604's ptr
-
-**触屏分发处理**：
-
-- `dispatchTouchEvent`
-- `onInterceptTouchEvent`
-- `onTouchEvent`
-
-**触屏事件示例**：同Chris banes' ptr
-
-###6. SwipeRefreshLayout
-
-**触屏分发处理**：
-
-- `dispatchTouchEvent`
-- `onInterceptTouchEvent`
-- `onTouchEvent`
-
-**触屏事件示例**：同Liaohuqiu's ptr
+- **Johannilsson's ptr** 没有嵌套，直接处理`onTouchEvent`；
+- **Yalantis's ptr** 嵌套视图，处理类似Chris banes' ptr；
+- **race604's ptr** 嵌套视图，处理类似Chris banes' ptr；
+- **SwipeRefreshLayout** 嵌套视图，处理类似Liaohuqiu's ptr。
 
 ##性能分析
 
