@@ -18,11 +18,11 @@ import com.facebook.drawee.view.SimpleDraweeView;
  * Created by desmond on 2015/12/9.
  */
 public class CommonListAdapter extends BaseAdapter {
-    public static final String URL_HEAD = "http://desmondtu.oss-cn-shanghai.aliyuncs.com/ptrcomp/";
+    public static final String URL_HEAD = "http://desmondtu.oss-cn-shanghai.aliyuncs.com/ptr_comp/";
     public static final int TYPE_NORMAL = 0;
     public static final int TYPE_HORIZONTAL_SCROLLABLE = 1;
-    public static final int ITEM_COUNT = 15;
-    public static final int TOTAL_COUNT = 30;
+    public static final int ITEM_COUNT = 5;
+    public static final int TOTAL_COUNT = 20;
     private Context mContext;
     private int mStartOffset = 1;
 
