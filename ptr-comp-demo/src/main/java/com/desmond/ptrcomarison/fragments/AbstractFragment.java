@@ -13,7 +13,6 @@ import android.widget.ListView;
 
 import com.desmond.ptrcomarison.common.CommonListAdapter;
 import com.desmond.ptrcomarison.MainActivity;
-import com.squareup.picasso.Picasso;
 
 /**
  * Base fragment
@@ -57,7 +56,6 @@ public abstract class AbstractFragment extends Fragment{
 
     protected void init(){
         mAdapter = new CommonListAdapter(getActivity());
-        mAdapter.setRequestTag(TAG);
         getListView().setAdapter(mAdapter);
     }
 
@@ -69,7 +67,6 @@ public abstract class AbstractFragment extends Fragment{
     public void onDestroyView() {
         Log.i(TAG, "AbstractFragment->onDestroyView :" + this.getClass().getSimpleName());
         super.onDestroyView();
-        Picasso.with(getActivity()).cancelTag(TAG);
     }
 
     public CommonListAdapter getAdapter() {

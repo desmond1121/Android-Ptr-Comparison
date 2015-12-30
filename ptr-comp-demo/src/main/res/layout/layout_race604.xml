@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ListView
+        <com.desmond.common.ClassicListView
             android:id="@+id/race_list_view"
             android:background="?attr/colorPrimary"
             android:layout_width="match_parent"

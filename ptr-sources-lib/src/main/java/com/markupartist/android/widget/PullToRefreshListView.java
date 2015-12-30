@@ -4,6 +4,7 @@ package com.markupartist.android.widget;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -19,9 +20,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.AbsListView.OnScrollListener;
 
+import com.desmond.common.ClassicListView;
 import com.desmond.libs.R;
 
-public class PullToRefreshListView extends ListView implements OnScrollListener {
+public class PullToRefreshListView extends ClassicListView implements OnScrollListener {
 
     private static final int TAP_TO_REFRESH = 1;
     private static final int PULL_TO_REFRESH = 2;
@@ -157,6 +159,11 @@ public class PullToRefreshListView extends ListView implements OnScrollListener 
         } else {
             mRefreshViewLastUpdated.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        return super.dispatchKeyEvent(event);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.desmond.ptrcomarison.fragments;
 
 import android.widget.ListView;
 
+import com.desmond.common.ClassicListView;
 import com.desmond.ptrcomarison.R;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
@@ -36,9 +37,9 @@ public class ChrisBanesPtrFragment extends AbstractFragment {
     @Override
     protected void init(){
         super.init();
-        mPtr.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ListView>() {
+        mPtr.setOnRefreshListener(new PullToRefreshBase.OnRefreshListener<ClassicListView>() {
             @Override
-            public void onRefresh(PullToRefreshBase<ListView> refreshView) {
+            public void onRefresh(PullToRefreshBase<ClassicListView> refreshView) {
                 refresh();
             }
         });

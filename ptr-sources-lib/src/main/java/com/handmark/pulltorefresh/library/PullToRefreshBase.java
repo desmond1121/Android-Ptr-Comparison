@@ -223,7 +223,12 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 		return mScrollingWhileRefreshingEnabled;
 	}
 
-	@Override
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        return super.dispatchTouchEvent(ev);
+    }
+
+    @Override
 	public final boolean onInterceptTouchEvent(MotionEvent event) {
 
 		if (!isPullToRefreshEnabled()) {
@@ -340,7 +345,7 @@ public abstract class PullToRefreshBase<T extends View> extends LinearLayout imp
 					mLastMotionX = mInitialMotionX = event.getX();
 					return true;
 				}
-				break;
+                break;
 			}
 
 			case MotionEvent.ACTION_CANCEL:

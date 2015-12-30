@@ -7,10 +7,9 @@
         android:layout_width="match_parent"
         android:background="#aaaaff"
         android:layout_height="100dp">
-        <ImageView
+        <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/image"
             android:layout_marginLeft="10dp"
-            android:scaleType="fitXY"
             android:layout_centerVertical="true"
             android:layout_width="160dp"
             android:layout_height="90dp"/>

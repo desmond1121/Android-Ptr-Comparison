@@ -1,21 +1,23 @@
 package com.desmond.ptrcomarison;
 
+import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
 import com.desmond.ptrcomarison.fragments.AbstractFragment;
 import com.desmond.ptrcomarison.fragments.ChrisBanesPtrFragment;
+import com.desmond.ptrcomarison.fragments.FlyRefreshPtrFragment;
 import com.desmond.ptrcomarison.fragments.JohanPtrFragment;
 import com.desmond.ptrcomarison.fragments.LiaohuqiuPtrFragment;
-import com.desmond.ptrcomarison.fragments.FlyRefreshPtrFragment;
 import com.desmond.ptrcomarison.fragments.SwipeFragment;
 import com.desmond.ptrcomarison.fragments.YalantisPtrFragment;
-import com.squareup.picasso.Picasso;
+import com.facebook.drawee.backends.pipeline.Fresco;
+import com.facebook.imagepipeline.core.ImagePipelineConfig;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +28,11 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ImagePipelineConfig config = ImagePipelineConfig.newBuilder(this)
+                .setBitmapsConfig(Bitmap.Config.ARGB_4444)
+                .build();
+        Fresco.initialize(this, config);
+
         setContentView(R.layout.activity_main);
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         ViewPager vp = (ViewPager) findViewById(R.id.view_pager);
@@ -36,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(vp);
     }
 
-    private void initFragments(){
+    private void initFragments() {
         mFgList = new ArrayList<>();
         mFgList.add(new ChrisBanesPtrFragment());
         mFgList.add(new LiaohuqiuPtrFragment());
@@ -46,17 +53,7 @@ public class MainActivity extends AppCompatActivity {
         mFgList.add(new SwipeFragment());
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        try{
-            Picasso.with(this).shutdown();
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-    }
-
-    class MyAdapter extends FragmentStatePagerAdapter{
+    class MyAdapter extends FragmentStatePagerAdapter {
 
         public MyAdapter(FragmentManager fm) {
             super(fm);

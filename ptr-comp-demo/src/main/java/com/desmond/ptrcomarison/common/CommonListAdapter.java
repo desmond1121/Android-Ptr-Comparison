@@ -1,19 +1,18 @@
 package com.desmond.ptrcomarison.common;
 
 import android.content.Context;
-import android.graphics.Bitmap;
+import android.content.res.Resources;
+import android.net.Uri;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.desmond.ptrcomarison.R;
-import com.squareup.picasso.LruCache;
-import com.squareup.picasso.Picasso;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 /**
  * Created by desmond on 2015/12/9.
@@ -26,24 +25,9 @@ public class CommonListAdapter extends BaseAdapter {
     public static final int TOTAL_COUNT = 30;
     private Context mContext;
     private int mStartOffset = 1;
-    private Object mRequestTag;
-    private static Picasso sPicasso = null;
 
     public CommonListAdapter(Context context) {
         mContext = context;
-        tryInitPicasso(context);
-    }
-
-    private static void tryInitPicasso(Context context){
-        if(sPicasso != null) return;
-        sPicasso = new Picasso.Builder(context)
-                .memoryCache(new MyCache(5))
-                .defaultBitmapConfig(Bitmap.Config.ARGB_4444)
-                .build();
-    }
-
-    public void setRequestTag(Object requestTag) {
-        this.mRequestTag = requestTag;
     }
 
     @Override
@@ -63,52 +47,45 @@ public class CommonListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View view;
         ViewHolder holder;
-        if(convertView == null){
-            if(getItemViewType(position) == TYPE_NORMAL){
+        if (convertView == null) {
+            holder = new ViewHolder();
+            if (getItemViewType(position) == TYPE_NORMAL) {
                 convertView = View.inflate(mContext, R.layout.list_item, null);
-                holder = new ViewHolder();
-                holder.image = (ImageView) convertView.findViewById(R.id.image);
+                holder.draweeView = (SimpleDraweeView) convertView.findViewById(R.id.image);
                 holder.title = (TextView) convertView.findViewById(R.id.title);
                 holder.content = (TextView) convertView.findViewById(R.id.content);
-                convertView.setTag(holder);
             } else {
                 convertView = View.inflate(mContext, R.layout.list_item_with_horcroll, null);
-                holder = new ViewHolder();
                 holder.recyclerView = (RecyclerView) convertView.findViewById(R.id.recycler_view);
-                convertView.setTag(holder);
             }
+            convertView.setTag(holder);
         }
 
-        view = convertView;
         holder = (ViewHolder) convertView.getTag();
         setViewData(position, holder);
-
-        return view;
+        return convertView;
     }
 
     private void setViewData(int position, ViewHolder holder) {
-        if(getItemViewType(position) == TYPE_NORMAL) {
-            sPicasso.load(getImageUrl(position + mStartOffset))
-                    .tag(mRequestTag)
-                    .into(holder.image);
+        if (getItemViewType(position) == TYPE_NORMAL) {
+            holder.draweeView.setImageURI(Uri.parse(getImageUrl(position + mStartOffset)));
             holder.title.setText(mContext.getString(R.string.list_item_title, position));
             holder.content.setText(mContext.getString(R.string.list_item_content, position));
         } else {
-            if(holder.recyclerView.getLayoutManager() == null){
+            if (holder.recyclerView.getLayoutManager() == null) {
                 LinearLayoutManager lm = new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false);
 
                 holder.recyclerView.setLayoutManager(lm);
             }
 
-            if(holder.recyclerView.getAdapter() == null){
+            if (holder.recyclerView.getAdapter() == null) {
                 holder.recyclerView.setAdapter(new RecyclerAdapter());
             }
         }
     }
 
-    public void nextPage(){
+    public void nextPage() {
         mStartOffset += ITEM_COUNT;
         mStartOffset %= TOTAL_COUNT;
         notifyDataSetChanged();
@@ -116,7 +93,7 @@ public class CommonListAdapter extends BaseAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        if(position != 2){
+        if (position != 2) {
             return TYPE_NORMAL;
         }
         return TYPE_HORIZONTAL_SCROLLABLE;
@@ -127,24 +104,23 @@ public class CommonListAdapter extends BaseAdapter {
         return 2;
     }
 
-    private String getImageUrl(int position){
+    public int dp2px(int dp) {
+        final float scale = Resources.getSystem().getDisplayMetrics().density;
+        return (int) (dp * scale);
+    }
+
+    private String getImageUrl(int position) {
         return URL_HEAD + position + ".jpg";
     }
 
-    static class MyCache extends LruCache{
-        public MyCache(int maxSize) {
-            super(maxSize);
-        }
-    }
-
-    class ViewHolder{
-        ImageView image;
+    class ViewHolder {
+        SimpleDraweeView draweeView;
         TextView title;
         TextView content;
         RecyclerView recyclerView;
     }
 
-    class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.RecyclerHolder>{
+    class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.RecyclerHolder> {
         @Override
         public RecyclerHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             return new RecyclerHolder(LayoutInflater.from(mContext).inflate(R.layout.sub_list_item, null));
@@ -162,6 +138,7 @@ public class CommonListAdapter extends BaseAdapter {
 
         class RecyclerHolder extends RecyclerView.ViewHolder {
             TextView tv;
+
             public RecyclerHolder(View itemView) {
                 super(itemView);
                 tv = (TextView) itemView.findViewById(R.id.text_view);

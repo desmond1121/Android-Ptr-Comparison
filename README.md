@@ -45,31 +45,55 @@
 
 ##触屏事件分发
 
-通过在`ListView`内部加入横向滑动对象来分析触屏滑动。
+本节分析控件对于**触屏事件的分发以及处理拖动的时机**，具体**拖动实现**将在下一节[性能分析](#性能分析)中介绍。
+
+此处添加进一个可以横滑的组件，并将所有组件中的`ListView`替换为自己实现的`ClassicListView`，重写控件`dispatchTouchEvent`, `onTouchEvent`来观察事件的处理传递。
 
 ###1. Chris Banes' ptr
 
-**触屏分发处理**：
+**触屏分发**：
 
-- `dispatchTouchEvent`
+- `dispatchTouchEvent` 没有处理。
 - `onInterceptTouchEvent`
-- `onTouchEvent`
+    + `DOWN` 不拦截，若可以拉动，更新拉动状态（`mIsBeingDragged`）为`false`；
+    + `MOVE` 正在更新、被拉动状态下都会拦截（返回`true`）；
+    + `UP/CANCEL` 不拦截，更新被拉动状态为false。
+- `onTouchEvent` (此阶段处理UI拖动逻辑)
+    + `DOWN` 此时可以拉动刷新时消耗该event（返回`true`），否则返回`false`；
+    + `MOVE` 被拉动时消耗该event（返回`true`），否则返回`false`；
+    + `UP/CANCEL` 被拉动时，消耗该event（返回`true`），否则返回`false`。
+
+**分析**：
+
+在`onTouchEvent`阶段处理了UI移动逻辑，且dispatch阶段不处理分发逻辑。配合此处intercept的处理，有两种情况：
+
+- 事件被下层view消耗了（如正在进行横滑），则无法进到自身的`onTouchEvent`阶段，就无法进行下拉、上拉的拖动；
+- 在自身进行上拉、下拉拖动时，事件将被截断，无法分发到下层View。
 
 **触屏事件示例**：
 
-![demo_gif](chrisbanes_scroll.gif)
+![chrisbanes_scroll](/demo_gif/chrisbanes_scroll.gif)
 
 ###2. Liaohuqiu's ptr
 
-**触屏分发处理**：
+**触屏分发**：
 
-- `dispatchTouchEvent`
-- `onInterceptTouchEvent`
-- `onTouchEvent`
+- `dispatchTouchEvent` (此阶段处理UI拖动逻辑)
+    + `DOWN` 手动调用`super.dispatchTouchEvent()`将事件传递下去，但之后直接返回`true`，保证后续能够处理到move、up、cancel事件；
+    + `MOVE` 被拉动时直接返回`true`，不向下传递事件；没有被拉动、无法触发拉动时不处理，传递给下层view。若设置了`disableWhenHorizontalMove`，则在没有被拉动时的横滑操作直接传递给下层view；
+    + `UP/CANCEL` 如果被拖动了，则直接返回`true`，截断了此次事件，并手动向下层传递一个cancel事件；否则直接传递给下层view。
+- `onInterceptTouchEvent` 没有处理
+- `onTouchEvent` 没有处理
+
+**分析**：
+
+dispatch阶段直接处理了分发逻辑与UI移动逻辑。只要它自身或它的子view处理了事件，dispatch永远会被触发，且它down时永远返回`true`。那么可以说：只要满足能够下拉的情况（对于`ListView`，默认为第一项完全可见）时，**下拉刷新动作一定会被触发**。一旦拉动，会在`updatePos`里面向下层view传递一个cancel事件，下层将会不再处理此次事件序列(原因可见`View.dispatchTouchEvent()` -> `InputEventConsistencyVerifier.onTouchEvent()`)。
+
+所以如果内部有冲突的滑动事件处理机制（典型就是嵌套横滑），那么只要一进行刷新拉动，内部的事件处理马上就会被截断。与Chris Banes的下拉刷新处理机制（内部消耗事件时外部无法拉动）不一样。
 
 **触屏事件示例**：
 
-![demo_gif](liaohuqiu_scroll.gif)
+![liaohuqiu_scroll](/demo_gif/liaohuqiu_scroll.gif)
 
 ###3. Johannilsson's ptr
 
@@ -262,8 +286,9 @@ trace snapshot:
 ##附录-知识点参考
 
 1. [为你的应用加速 - 安卓优化指南](https://github.com/bboyfeiyu/android-tech-frontier/blob/master/issue-27/%E4%B8%BA%E4%BD%A0%E7%9A%84%E5%BA%94%E7%94%A8%E5%8A%A0%E9%80%9F%20-%20%E5%AE%89%E5%8D%93%E4%BC%98%E5%8C%96%E6%8C%87%E5%8D%97.md)
-2. [使用Systrace分析UI性能](https://github.com/bboyfeiyu/android-tech-frontier/blob/b7e3f1715158fb9f2bbb0f349c4ec3da3db81342/issue-26/%E4%BD%BF%E7%94%A8Systrace%E5%88%86%E6%9E%90UI%E6%80%A7%E8%83%BD.md)
-3. [Systrace-文档](developers.android.com/tools/help/systrace.html)
+1. [使用Systrace分析UI性能](https://github.com/bboyfeiyu/android-tech-frontier/blob/b7e3f1715158fb9f2bbb0f349c4ec3da3db81342/issue-26/%E4%BD%BF%E7%94%A8Systrace%E5%88%86%E6%9E%90UI%E6%80%A7%E8%83%BD.md)
+1. [Systrace-文档](developers.android.com/tools/help/systrace.html)
+1. [事件分发-郭霖csdn](http://blog.csdn.net/guolin_blog/article/details/9153747)
 
 [4]: https://github.com/chrisbanes
 [3]: https://github.com/chrisbanes/Android-PullToRefresh

@@ -28,6 +28,7 @@ public class LiaohuqiuPtrFragment extends AbstractFragment {
     protected ListView getListView() {
         if (mPtr == null) {
             mPtr = (PtrFrameLayout) mLayout.findViewById(R.id.ptr_frame_layout);
+            mPtr.disableWhenHorizontalMove(true);
             mHeader = new LiaohuqiuPtrHeader(getContext());
             mPtr.setHeaderView(mHeader);
             mPtr.addPtrUIHandler(mHeader);

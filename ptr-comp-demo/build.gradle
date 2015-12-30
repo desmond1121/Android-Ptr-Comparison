@@ -25,5 +25,5 @@ dependencies {
     compile project(':ptr-sources-lib')
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
-    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.facebook.fresco:fresco:0.8.0'
 }
