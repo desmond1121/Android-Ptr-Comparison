@@ -54,21 +54,21 @@
 **触屏分发**：
 
 - `dispatchTouchEvent` 没有处理。
-- `onInterceptTouchEvent`
-    + `DOWN` 不拦截。若可以拉动，更新拉动状态（`mIsBeingDragged`）为`false`；
-    + `MOVE` 正在更新、被拉动状态下都会拦截（返回`true`）；
+- `onInterceptTouchEvent` 返回结果为`mIsBeingDragged`。
+    + `DOWN` 不拦截。若可以拉动，更新`mIsBeingDragged`为`false`；
+    + `MOVE` 正在更新时直接拦截，如果拉动模式方向（竖直or水平）上的移动更多则将`mIsBeingDragged`置为`true`（反之不会置为`false`）。
     + `UP/CANCEL` 不拦截，更新被拉动状态为false。
 - `onTouchEvent` （此阶段处理UI拖动逻辑）
     + `DOWN` 此时可以拉动刷新时消耗该event（返回`true`），否则返回`false`；
-    + `MOVE` 被拉动时消耗该event（返回`true`），否则返回`false`；
-    + `UP/CANCEL` 被拉动时，消耗该event（返回`true`），否则返回`false`。
+    + `MOVE` `mIsBeingDragged`为`true`时消耗该event（返回`true`），否则返回`false`；
+    + `UP/CANCEL` `mIsBeingDragged`为`true`时，消耗该event（返回`true`），否则返回`false`。
 
 **分析**：
 
 在`onTouchEvent`阶段处理了UI移动逻辑，且dispatch阶段不处理分发逻辑。配合此处intercept的处理，有两种情况：
 
-- 事件被下层view消耗了（如正在进行横滑），则无法进到自身的`onTouchEvent`阶段，就无法进行下拉、上拉的拖动；
-- 在自身进行上拉、下拉拖动时，事件将被截断，无法分发到下层View。
+- 最开始横滑，则不拦截，并且``mIsBeingDragged`为`false`时，`onTouchEvent`没有消耗此次事件，则此次不会再交给自己处理，它现在只有dispatch的功能，无法进行下拉、上拉的拖动；于是可以这么说：横滑事件一旦进行，就**无法触发上拉、下拉刷新**。
+- 最开始竖滑，则可以拉动时，事件将被截断，并`onTouchEvent`返回`true`消耗该事件，无法分发到下层View，始终交由自身处理。
 
 **触屏事件示例**：
 
@@ -97,12 +97,12 @@ dispatch阶段直接处理了分发逻辑与UI移动逻辑。只要它自身或�
 
 ###3.其他库
 
-基本的做法就是如上两种，由于`ListView`一定会消耗事件，如果是**嵌套视图**的话必须重写`onInterceptTouchEvent`+`onTouchEvent`或者直接重写`dispatchTouchEvent`才能够保证正确接收并处理到触摸事件。两种方法的特点已经在上面分别列出，下面简单列出余下库的做法：
+基本的做法就是如上两种。以下不再赘述，由于`ListView`一定会消耗事件，如果是**嵌套视图**的话必须重写`onInterceptTouchEvent`+`onTouchEvent`或者直接重写`dispatchTouchEvent`才能够保证正确接收并处理到触摸事件。两种方法其实都能实现同样的效果，的特点已经在上面分别列出，下面简单列出余下库的做法：
 
 - **Johannilsson's ptr** 没有嵌套，直接处理`onTouchEvent`；
 - **Yalantis's ptr** 嵌套视图，处理类似Chris banes' ptr；
 - **race604's ptr** 嵌套视图，处理类似Chris banes' ptr；
-- **SwipeRefreshLayout** 嵌套视图，处理类似Liaohuqiu's ptr。
+- **SwipeRefreshLayout** 嵌套视图，效果类似Liaohuqiu's ptr，但是处理是通过`onInterceptTouchEvent` + `onTouchEvent`与之前不同。由于它在`onTouchEvent`中默认返回`true`，消耗了这个事件，所以后续还是能够处理。一开始横滑时事件被下层View消耗了，但是一旦进行竖滑，`onInterceptTouchEvent`就截断了此次事件，同时能够进到`onTouchEvent`进行处理。
 
 ##性能分析
 
