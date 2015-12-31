@@ -47,7 +47,7 @@
 
 本节分析控件对于**触屏事件的分发以及处理拖动的时机**，具体**拖动实现**将在下一节[性能分析](#性能分析)中介绍。
 
-此处添加进一个可以横滑的组件，并将所有组件中的`ListView`替换为自己实现的`ClassicListView`，重写控件`dispatchTouchEvent`, `onTouchEvent`来观察事件的处理传递。
+此处添加进一个可以横滑的组件，并将所有组件中的`ListView`替换为自己实现的`ClassicListView`，重写控件`dispatchTouchEvent`, `onTouchEvent`来观察事件的处理传递。举几个典型：
 
 ###1. Chris Banes' ptr
 
@@ -57,7 +57,7 @@
 - `onInterceptTouchEvent` 返回结果为`mIsBeingDragged`。
     + `DOWN` 不拦截。若可以拉动，更新`mIsBeingDragged`为`false`；
     + `MOVE` 正在更新时直接拦截，如果拉动模式方向（竖直or水平）上的移动更多则将`mIsBeingDragged`置为`true`（反之不会置为`false`）。
-    + `UP/CANCEL` 不拦截，更新被拉动状态为false。
+    + `UP/CANCEL` 不拦截，更新`mIsBeingDragged`为false。
 - `onTouchEvent` （此阶段处理UI拖动逻辑）
     + `DOWN` 此时可以拉动刷新时消耗该event（返回`true`），否则返回`false`；
     + `MOVE` `mIsBeingDragged`为`true`时消耗该event（返回`true`），否则返回`false`；
@@ -74,7 +74,29 @@
 
 ![chrisbanes_scroll](/demo_gif/chrisbanes_scroll.gif)
 
-###2. Liaohuqiu's ptr
+###2. SwipeRefreshLayout
+
+**触屏分发**：
+
+- `dispatchTouchEvent` 没有处理。
+- `onInterceptTouchEvent` 如果此时无法触发刷新，直接返回`false`；其他情况返回结果为`mIsBeingDragged`:
+    + `DOWN` 更新`mIsBeingDragged`为`false`，不拦截；
+    + `MOVE` 只要竖向移动偏移量大于`TouchSlop`则拦截，更新`mIsBeingDragged`为`true`；
+    + `UP/CANCEL` 不拦截，更新`mIsBeingDragged`为false。
+- `onTouchEvent` （此阶段处理UI拖动逻辑）
+    + `DOWN` 消耗event（返回`true`）；
+    + `MOVE` 仅仅当移动回顶部后再移动时不消耗，其他情况均消耗event（返回`true`）；
+    + `UP/CANCEL` 不消耗。
+
+**分析**：
+
+与Chris Banes一样，处理方式都是重写`onInterceptTouchEvent` + `onTouchEvent`，不过效果却完全不同。究其原因，主要是它没有对水平、竖直冲突时做判断，并且`onTouchEvent`中除个别情况外都返回`true`，即消耗了这个事件。所以**只要能够刷新时，无论事件是否被底层view消耗，刷新动作一定会截断事件分发**。
+
+**触屏事件示例**：
+
+![swipe_scroll](/demo_gif/swipe_scroll.gif)
+
+###3. Liaohuqiu's ptr
 
 **触屏分发**：
 
@@ -97,12 +119,11 @@ dispatch阶段直接处理了分发逻辑与UI移动逻辑。只要它自身或�
 
 ###3.其他库
 
-基本的做法就是如上两种。以下不再赘述，由于`ListView`一定会消耗事件，如果是**嵌套视图**的话必须重写`onInterceptTouchEvent`+`onTouchEvent`或者直接重写`dispatchTouchEvent`才能够保证正确接收并处理到触摸事件。两种方法其实都能实现同样的效果，的特点已经在上面分别列出，下面简单列出余下库的做法：
+基本的做法就是如上两种。以下不再赘述，由于`ListView`一定会消耗事件，如果是**嵌套视图**的话必须重写`onInterceptTouchEvent`+`onTouchEvent`或者直接重写`dispatchTouchEvent`才能够保证正确接收并处理到触摸事件。两种写法各有利弊，我个人认为重写`onInterceptTouchEvent` + `onTouchEvent`更加灵活。下面简单列出余下库的做法：
 
 - **Johannilsson's ptr** 没有嵌套，直接处理`onTouchEvent`；
 - **Yalantis's ptr** 嵌套视图，处理类似Chris banes' ptr；
 - **race604's ptr** 嵌套视图，处理类似Chris banes' ptr；
-- **SwipeRefreshLayout** 嵌套视图，效果类似Liaohuqiu's ptr，但是处理是通过`onInterceptTouchEvent` + `onTouchEvent`与之前不同。由于它在`onTouchEvent`中默认返回`true`，消耗了这个事件，所以后续还是能够处理。一开始横滑时事件被下层View消耗了，但是一旦进行竖滑，`onInterceptTouchEvent`就截断了此次事件，同时能够进到`onTouchEvent`进行处理。
 
 ##性能分析
 
