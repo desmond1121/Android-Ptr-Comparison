@@ -18,7 +18,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
  * Created by desmond on 2015/12/9.
  */
 public class CommonListAdapter extends BaseAdapter {
-    public static final String URL_HEAD = "http://desmondtu.oss-cn-shanghai.aliyuncs.com/ptr_comp/";
+    public static final String URL_HEAD = "http://image.desmondyao.com/ptr_comp/";
     public static final int TYPE_NORMAL = 0;
     public static final int TYPE_HORIZONTAL_SCROLLABLE = 1;
     public static final int ITEM_COUNT = 5;

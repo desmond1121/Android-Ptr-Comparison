@@ -7,11 +7,12 @@
         android:layout_width="fill_parent"
         android:layout_height="60dp">
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/ptr_classic_header_rotate_view_header_text"
             android:layout_width="150dp"
             android:layout_height="90dp"
             android:layout_centerInParent="true"
+            android:gravity="center"
             android:orientation="vertical">
 
             <TextView
@@ -25,13 +26,15 @@
 
             <TextView
                 android:id="@+id/ptr_classic_header_rotate_view_header_last_update"
+                android:layout_below="@id/ptr_classic_header_rotate_view_header_title"
                 android:layout_width="150dp"
-                android:layout_height="20dp"
+                android:layout_height="wrap_content"
                 android:gravity="center"
+                android:visibility="gone"
                 android:layout_marginTop="2dp"
                 android:textColor="#999999"
                 android:textSize="10sp" />
-        </LinearLayout>
+        </RelativeLayout>
 
         <FrameLayout
             android:layout_width="45dp"

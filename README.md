@@ -32,6 +32,10 @@
 |[FlyRefresh][9]|不支持，此控件特点就是顶部视图及动画。|任意视图|
 |[SwipeRefreshLayout][11]|不支持，固定为Material风格|任意视图|
 
+在拓展性的评价上, 谢谢[@XavierSAndroid](https://github.com/XavierSAndroid)同学提的的[建议](https://github.com/desmond1121/Android-Ptr-Comparison/issues/3):
+
+> 由于下拉刷新已经较为偏离Google所『设定』的方向，所以在讨论这样的下拉刷新就隐含了『不局限于Google希望的风格』的前提。所以，从不拘泥于Android风格的设计上讲，用户体验方面，还有一个很重要的『内部滚动衔接外部OverScroll的处理』。这也是很关键的：第一次滑到顶骤停了，再拉才可以下拉刷新；和一次滑就能看到头部。用户体验差距是巨大的。至少，提供给开发者，开发者可以选择不用。
+
 ##易用性
 
 |Repo|可在gradle配置|上拉加载|自动加载|滑动阻尼配置|
