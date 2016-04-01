@@ -1,7 +1,7 @@
-#安卓下拉刷新开源库对比
+# 安卓下拉刷新开源库对比
 目前仅比对github上star数>1500的下拉刷新开源库，在比较完成之后可能会加入其它有代表性的库.
 
-##目录
+## 目录
 
 - [对比的开源库列表及简介](#Repo)
 - [拓展性](#拓展性)
@@ -11,17 +11,17 @@
 - [总结](#总结)
 - [附录-知识点参考](#附录-知识点参考)
 
-##Repo
+## Repo
 |Repo|Owner|Star<br/>(2015.12.5)|version|Snap shot|
 |:--:|:--:|:------:|:---:|:--:|
-|[Android-PullToRefresh][3]<br/>(作者已停止维护)|[chrisbanes][4]|6014|latest|![chrisbanes](/demo_gif/chrisbanes.gif)|
-|[android-Ultra-Pull-To-Refresh][1]|[liaohuqiu][2]|3413|1.0.11|![liaohuqiu](/demo_gif/liaohuqiu.gif)|
-|[android-pulltorefresh][5]<br/>(作者已停止维护)|[johannilsson][6]|2414|latest|![johannilsson](/demo_gif/johan.gif)|
-|[Phoenix][7]|[Yalantis][8]|1897|1.2.3|![yalantis](/demo_gif/yalantis.gif)|
-|[FlyRefresh][9]|[race604][10]|1843|2.0.0|![flyrefresh](/demo_gif/flyrefresh.gif)|
-|[SwipeRefreshLayout][11]|Android <br/> Support v4 <br/> (19.1.0 ↑)|None|latest|![swipe_refresh](/demo_gif/swipe.gif)|
+|[Android-PullToRefresh][3]<br/>(作者已停止维护)|[chrisbanes][4]|6014|latest|![chrisbanes](http://image.desmondyao.com/ptr_comp/chrisbanes.gif)|
+|[android-Ultra-Pull-To-Refresh][1]|[liaohuqiu][2]|3413|1.0.11|![liaohuqiu](http://image.desmondyao.com/ptr_comp/liaohuqiu.gif)|
+|[android-pulltorefresh][5]<br/>(作者已停止维护)|[johannilsson][6]|2414|latest|![johannilsson](http://image.desmondyao.com/ptr_comp/johan.gif)|
+|[Phoenix][7]|[Yalantis][8]|1897|1.2.3|![yalantis](http://image.desmondyao.com/ptr_comp/yalantis.gif)|
+|[FlyRefresh][9]|[race604][10]|1843|2.0.0|![flyrefresh](http://image.desmondyao.com/ptr_comp/flyrefresh.gif)|
+|[SwipeRefreshLayout][11]|Android <br/> Support v4 <br/> (19.1.0 ↑)|None|latest|![swipe_refresh](http://image.desmondyao.com/ptr_comp/swipe.gif)|
 
-##拓展性
+## 拓展性
 
 |Repo|自定义顶部视图|支持的内容布局|
 |:--:|:--:|:--:|:---:|:--:|:--:|
@@ -36,7 +36,7 @@
 
 > 由于下拉刷新已经较为偏离Google所『设定』的方向，所以在讨论这样的下拉刷新就隐含了『不局限于Google希望的风格』的前提。所以，从不拘泥于Android风格的设计上讲，用户体验方面，还有一个很重要的『内部滚动衔接外部OverScroll的处理』。这也是很关键的：第一次滑到顶骤停了，再拉才可以下拉刷新；和一次滑就能看到头部。用户体验差距是巨大的。至少，提供给开发者，开发者可以选择不用。
 
-##易用性
+## 易用性
 
 |Repo|可在gradle配置|上拉加载|自动加载|滑动阻尼配置|
 |:--:|:--:|:------:|:---:|:--:|:--:|:--:|
@@ -47,7 +47,7 @@
 |[FlyRefresh][9]|√|×|×|×|
 |[SwipeRefreshLayout][11]|√|×|×|移动比固定1/2|
 
-##触屏事件分发
+## 触屏事件分发
 
 本节分析控件对于**触屏事件的分发以及处理拖动的时机**，具体**拖动实现**将在下一节[性能分析](#性能分析)中介绍。
 
@@ -76,7 +76,7 @@
 
 **触屏事件示例**：
 
-![chrisbanes_scroll](/demo_gif/chrisbanes_scroll.gif)
+![chrisbanes_scroll](http://image.desmondyao.com/ptr_comp/chrisbanes_scroll.gif)
 
 ###2. SwipeRefreshLayout
 
@@ -98,7 +98,7 @@
 
 **触屏事件示例**：
 
-![swipe_scroll](/demo_gif/swipe_scroll.gif)
+![swipe_scroll](http://image.desmondyao.com/ptr_comp/swipe_scroll.gif)
 
 ###3. Liaohuqiu's ptr
 
@@ -119,7 +119,7 @@ dispatch阶段直接处理了分发逻辑与UI移动逻辑。只要它自身或�
 
 **触屏事件示例**：
 
-![liaohuqiu_scroll](/demo_gif/liaohuqiu_scroll.gif)
+![liaohuqiu_scroll](http://image.desmondyao.com/ptr_comp/liaohuqiu_scroll.gif)
 
 ###3.其他库
 
@@ -133,7 +133,7 @@ dispatch阶段直接处理了分发逻辑与UI移动逻辑。只要它自身或�
 
 通过捕捉如下图中的操作持续1秒钟的systrace进行性能分析：
 
-![trace_operation](trace_operation.gif)
+![trace_operation](http://image.desmondyao.com/ptr_comp/trace_operation.gif)
 
 > 注：由于开源库Header大多无法直接放自定义顶部视图，头部视图复杂程度不同，数据对比结果会有所偏差。
 
@@ -143,7 +143,7 @@ dispatch阶段直接处理了分发逻辑与UI移动逻辑。只要它自身或�
 
 trace snapshot:
 
-![trace_chrisbanes](/traces/chrisbanes.PNG)
+![trace_chrisbanes](http://image.desmondyao.com/ptr_comp/chrisbanes.PNG)
 
 **分析**：
 
@@ -155,7 +155,7 @@ trace snapshot:
 
 trace snapshot:
 
-![trace_liaohuqiu](/traces/liaohuqiu.PNG)
+![trace_liaohuqiu](http://image.desmondyao.com/ptr_comp/liaohuqiu.PNG)
 
 **分析**：
 
@@ -169,7 +169,7 @@ trace snapshot:
 
 我修改了一下，将其全部变为固定高度、宽度，之后的trace如下：
 
-![trace_liaohuqiu_new](/traces/liaohuqiu_new.PNG)
+![trace_liaohuqiu_new](http://image.desmondyao.com/ptr_comp/liaohuqiu_new.PNG)
 
 measure时间神奇的没掉了吧:)
 
@@ -179,7 +179,7 @@ measure时间神奇的没掉了吧:)
 
 trace snapshot:
 
-![trace_johan](/traces/johan.PNG)
+![trace_johan](http://image.desmondyao.com/ptr_comp/johan.PNG)
 
 **分析**：
 
@@ -193,7 +193,7 @@ trace snapshot:
 
 trace snapshot:
 
-![trace_yalantis](/traces/yalantis.PNG)
+![trace_yalantis](http://image.desmondyao.com/ptr_comp/yalantis.PNG)
 
 **分析**：
 
@@ -201,17 +201,17 @@ trace snapshot:
 
 它在松手后回滚时调用的`View.setPadding()`可能会造成measure开销比较大，于是我特地测了一下松手回滚的trace，一看确实measure时间非常可观：
 
-![trace_yalantis_scroll_back](/traces/yalantis_back.PNG)
+![trace_yalantis_scroll_back](http://image.desmondyao.com/ptr_comp/yalantis_back.PNG)
 
 确实它如果要保证展示内容视图的padding与布局文件中一致，是必须这么做的（调用`View.setPadding()`），因为通过`View.offsetTopAndBottom()`向下移动子视图时，子视图的内容整个移动下来，在视觉上会影响它设置好的底部padding。但是很有意思，它向下移动的时候没有这么设置，拉下来的时候底部padding就没了。回滚动画的时候才设了padding，就显得没那么必要了。我在demo中也进行了实践，确实是这样的：
 
-![yalantis_padding](/demo_gif/yalantis_padding.gif)
+![yalantis_padding](http://image.desmondyao.com/ptr_comp/yalantis_padding.gif)
 
 我暂时也没想到什么方法可以更好地处理子视图padding问题。但实际上，由于这个库是一个嵌套视图，并且只会有一个内容视图显示出来，可以尝试放弃对子视图padding的处理。如果需要，可以使用父视图的padding来代替，这样是最完美的效果。子视图再怎么移动，也会被父视图已经设好的padding局限住。由此一来padding就不会被影响，同时提高了性能。不过这样一来牺牲了子视图padding的设置，在使用的时候可以根据需要各取所需。
 
 我粗略的做了一点点改动，将它的`setPadding()`注释掉了。不过由于该库的一些其他实现逻辑，导致会有一些问题，此处仅看性能上的变化，改动后松手回滚trace，已经没有了measure时间：
 
-![yalantis_back_trace_new](/traces/yalantis_back_new.PNG)
+![yalantis_back_trace_new](http://image.desmondyao.com/ptr_comp/yalantis_back_new.PNG)
 
 ###5. race604's Ptr
 
@@ -224,7 +224,7 @@ trace snapshot:
 
 trace snapshot:
 
-![trace_flyrefresh](/traces/flyrefresh.PNG)
+![trace_flyrefresh](http://image.desmondyao.com/ptr_comp/flyrefresh.PNG)
 
 **分析**：每次拖动都会重新计算背景"山体"与"树木"的`Path`，造成了draw时间过长。效果不错，也是一个好的学习对象，相比`Yalantis`的下拉刷新性能上就差一些了，它的draw中的计算量太多。使用起来疑似有bug：拖动到顶部，无法再往上拖动，并且会出现拖动异常。
 
@@ -239,7 +239,7 @@ trace snapshot:
 
 trace snapshot:
 
-![trace_swipe](/traces/swipe.PNG)
+![trace_swipe](http://image.desmondyao.com/ptr_comp/swipe.PNG)
 
 **分析**：官方的下拉刷新组件，动画十分美观简洁，API构造清晰明了。但是为什么每次的移动都会有一段明显的measure时间呢？我研究了一下代码，发现罪魁祸首是`View.bringToFront()`，它在每一次滑动的时候都会对顶部动效视图调用这个函数。仔细追朔这个函数源码，它会走到下面这段代码中：
 
@@ -261,11 +261,11 @@ trace snapshot:
 
 于是我copy了一份代码，将这一行注了(对应代码ptr-source-lib/src/main/java/com/android/support/SwipeRefreshLayout.java)，再次编译，measure时间确实没掉了，对功能毫无影响，性能却有了很大优化：
 
-![trace_swipe](/traces/swipe_new.PNG)
+![trace_swipe](http://image.desmondyao.com/ptr_comp/swipe_new.PNG)
 
 这样一来就不会每一次拉动，都会触发measure。若有同学知道这个`bringToFront()`在其中有其他我未探测到的功效，请issue指点:) 
 
-##总结
+## 总结
 
 |Repo|性能|拓展性|综合建议|
 |:--:|:--:|:--:|:--:|
@@ -277,7 +277,7 @@ trace snapshot:
 |[SwipeRefreshLayout][11]|★★★|★★|官方出品，更新有保障，但是如上分析，其实性能上还是有点缺陷的，拓展性比较差，不建议放入工程中使用。|
 
 
-##附录-知识点参考
+## 附录-知识点参考
 
 1. [为你的应用加速 - 安卓优化指南](https://github.com/bboyfeiyu/android-tech-frontier/blob/master/issue-27/%E4%B8%BA%E4%BD%A0%E7%9A%84%E5%BA%94%E7%94%A8%E5%8A%A0%E9%80%9F%20-%20%E5%AE%89%E5%8D%93%E4%BC%98%E5%8C%96%E6%8C%87%E5%8D%97.md)
 1. [使用Systrace分析UI性能](https://github.com/bboyfeiyu/android-tech-frontier/blob/b7e3f1715158fb9f2bbb0f349c4ec3da3db81342/issue-26/%E4%BD%BF%E7%94%A8Systrace%E5%88%86%E6%9E%90UI%E6%80%A7%E8%83%BD.md)
