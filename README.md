@@ -1,25 +1,16 @@
 # 安卓下拉刷新开源库对比
-目前仅比对github上star数>1500的下拉刷新开源库，在比较完成之后可能会加入其它有代表性的库.
 
-## 目录
-
-- [对比的开源库列表及简介](#Repo)
-- [拓展性](#拓展性)
-- [易用性](#易用性)
-- [触屏事件分发](#触屏事件分发)
-- [性能分析](#性能分析)
-- [总结](#总结)
-- [附录-知识点参考](#附录-知识点参考)
+目前仅比对github上star数>1500的下拉刷新开源库，在比较完成之后可能会加入其它有代表性的库. 本文的demo可以在[github](https://github.com/desmond1121/Android-Ptr-Comparison)上找到。
 
 ## Repo
 |Repo|Owner|Star<br/>(2015.12.5)|version|Snap shot|
 |:--:|:--:|:------:|:---:|:--:|
-|[Android-PullToRefresh][3]<br/>(作者已停止维护)|[chrisbanes][4]|6014|latest|![chrisbanes](http://image.desmondyao.com/ptr_comp/chrisbanes.gif)|
-|[android-Ultra-Pull-To-Refresh][1]|[liaohuqiu][2]|3413|1.0.11|![liaohuqiu](http://image.desmondyao.com/ptr_comp/liaohuqiu.gif)|
-|[android-pulltorefresh][5]<br/>(作者已停止维护)|[johannilsson][6]|2414|latest|![johannilsson](http://image.desmondyao.com/ptr_comp/johan.gif)|
-|[Phoenix][7]|[Yalantis][8]|1897|1.2.3|![yalantis](http://image.desmondyao.com/ptr_comp/yalantis.gif)|
-|[FlyRefresh][9]|[race604][10]|1843|2.0.0|![flyrefresh](http://image.desmondyao.com/ptr_comp/flyrefresh.gif)|
-|[SwipeRefreshLayout][11]|Android <br/> Support v4 <br/> (19.1.0 ↑)|None|latest|![swipe_refresh](http://image.desmondyao.com/ptr_comp/swipe.gif)|
+|[Android-PullToRefresh][3]<br/>(作者已停止维护)|[chrisbanes][4]|6014|latest|![chrisbanes](ptr_comp/chrisbanes.gif)|
+|[android-Ultra-Pull-To-Refresh][1]|[liaohuqiu][2]|3413|1.0.11|![liaohuqiu](ptr_comp/liaohuqiu.gif)|
+|[android-pulltorefresh][5]<br/>(作者已停止维护)|[johannilsson][6]|2414|latest|![johannilsson](ptr_comp/johan.gif)|
+|[Phoenix][7]|[Yalantis][8]|1897|1.2.3|![yalantis](ptr_comp/yalantis.gif)|
+|[FlyRefresh][9]|[race604][10]|1843|2.0.0|![flyrefresh](ptr_comp/flyrefresh.gif)|
+|[SwipeRefreshLayout][11]|Android <br/> Support v4 <br/> (19.1.0 ↑)|None|latest|![swipe_refresh](ptr_comp/swipe.gif)|
 
 ## 拓展性
 
@@ -53,7 +44,7 @@
 
 此处添加进一个可以横滑的组件，并将所有组件中的`ListView`替换为自己实现的`ClassicListView`，重写控件`dispatchTouchEvent`, `onTouchEvent`来观察事件的处理传递。举几个典型：
 
-###1. Chris Banes' ptr
+### 1. Chris Banes' ptr
 
 **触屏分发**：
 
@@ -76,9 +67,9 @@
 
 **触屏事件示例**：
 
-![chrisbanes_scroll](http://image.desmondyao.com/ptr_comp/chrisbanes_scroll.gif)
+![chrisbanes_scroll](ptr_comp/chrisbanes_scroll.gif)
 
-###2. SwipeRefreshLayout
+### 2. SwipeRefreshLayout
 
 **触屏分发**：
 
@@ -98,9 +89,9 @@
 
 **触屏事件示例**：
 
-![swipe_scroll](http://image.desmondyao.com/ptr_comp/swipe_scroll.gif)
+![swipe_scroll](ptr_comp/swipe_scroll.gif)
 
-###3. Liaohuqiu's ptr
+### 3. Liaohuqiu's ptr
 
 **触屏分发**：
 
@@ -119,9 +110,9 @@ dispatch阶段直接处理了分发逻辑与UI移动逻辑。只要它自身或�
 
 **触屏事件示例**：
 
-![liaohuqiu_scroll](http://image.desmondyao.com/ptr_comp/liaohuqiu_scroll.gif)
+![liaohuqiu_scroll](ptr_comp/liaohuqiu_scroll.gif)
 
-###3.其他库
+### 3.其他库
 
 基本的做法就是如上两种。以下不再赘述，由于`ListView`一定会消耗事件，如果是**嵌套视图**的话必须重写`onInterceptTouchEvent`+`onTouchEvent`或者直接重写`dispatchTouchEvent`才能够保证正确接收并处理到触摸事件。两种写法各有利弊，我个人认为重写`onInterceptTouchEvent` + `onTouchEvent`更加灵活。下面简单列出余下库的做法：
 
@@ -133,35 +124,35 @@ dispatch阶段直接处理了分发逻辑与UI移动逻辑。只要它自身或�
 
 通过捕捉如下图中的操作持续1秒钟的systrace进行性能分析：
 
-![trace_operation](http://image.desmondyao.com/ptr_comp/trace_operation.gif)
+![trace_operation](ptr_comp/trace_operation.gif)
 
 > 注：由于开源库Header大多无法直接放自定义顶部视图，头部视图复杂程度不同，数据对比结果会有所偏差。
 
-###1. Chris Banes's Ptr
+### 1. Chris Banes's Ptr
 
-滑动实现方式：触摸造成的下拉均是`View.scrollTo()`实现的；在松手之后，`View.post(Runnable)`触发`Runnable`执行回滚动画，在滑回原处之前不断`post`自己，并配合`Interpolator`执行`scrollTo()`进行滚动。 
+滑动实现方式：触摸造成的下拉均是`View.scrollTo()`实现的；在松手之后，`View.post(Runnable)`触发`Runnable`执行回滚动画，在滑回原处之前不断`post`自己，并配合`Interpolator`执行`scrollTo()`进行滚动。
 
 trace snapshot:
 
-![trace_chrisbanes](http://image.desmondyao.com/ptr_comp/chrisbanes.PNG)
+![trace_chrisbanes](ptr_comp/chrisbanes.PNG)
 
 **分析**：
 
 作为Github上星星数最多的Android下拉刷新控件，从性能上看（渲染时间构成）几乎没有什么明显的缺点。可惜的是作者已经不再维护，顶部视图的扩展性比较差，并且gradle中也无法使用。在本次demo这类层级比较简单的环境中，几乎都达到了60fps，可以与后面的trace对比。
 
-###2. liaohuqiu's Ptr
+### 2. liaohuqiu's Ptr
 
 滑动实现方式：触摸造成的下拉均是`View.offsetTopAndBottom()`实现的；在松手之后，触发`Scroller.startScroll()`计算回滚，使用`View.post(Runnable)`不停地监视`Scroller`的计算结果，从而实现视图变化(此处依然是`View.offsetTopAndBottom()`完成视图移动)。
 
 trace snapshot:
 
-![trace_liaohuqiu](http://image.desmondyao.com/ptr_comp/liaohuqiu.PNG)
+![trace_liaohuqiu](ptr_comp/liaohuqiu.PNG)
 
 **分析**：
 
 这套开源库可以说是自定义功能最强的组件了，你可以实现`PtrUIHandler`并将其add到`PtrFrameLayout`完美地与下拉刷新事件适配。美中不足的就是在下拉状态变化的时候会有一阵measure时间。我查看了一下代码，发现是`PtrClassicFrameLayout`（作者实现的集成默认下拉视图的layout）的顶部视图出了问题：
 
-![liaohuqiu_header](/liaohuqiu_ptr_header.PNG)
+![liaohuqiu_header](ptr_comp/liaohuqiu_ptr_header.PNG)
 
 看！都是`wrap_content`，那么当里面的内容变化的时候，是会触发`View.requestLayout()`的。不要小看这一个子视图的小操作，一个`requestLayout()`大概是这么一个流程：`View.requestLayout()`->`ViewParent.requestLayout()`->...->`ViewRootImpl.requestLayout()`->`ViewRootImpl.doTraversal()`=>**MEASURE**(ViewGroup)=>**MEASURE**(ChildView of ViewGroup)
 
@@ -169,23 +160,23 @@ trace snapshot:
 
 我修改了一下，将其全部变为固定高度、宽度，之后的trace如下：
 
-![trace_liaohuqiu_new](http://image.desmondyao.com/ptr_comp/liaohuqiu_new.PNG)
+![trace_liaohuqiu_new](ptr_comp/liaohuqiu_new.PNG)
 
 measure时间神奇的没掉了吧:)
 
-###3. johannilsson's Ptr
+### 3. johannilsson's Ptr
 
 滑动实现方式：初始时`setSelection(1)`隐藏顶部视图（使用这个下拉刷新控件注意将滚动栏隐藏，否则会露馅）。在拉下来超过header view的measure高度之前，均是`ListView`自有的滚动；在下拉超过header measure高度之后，对header使用`View.setPadding()`让header继续下移。
 
 trace snapshot:
 
-![trace_johan](http://image.desmondyao.com/ptr_comp/johan.PNG)
+![trace_johan](ptr_comp/johan.PNG)
 
 **分析**：
 
 通过顶视图调用`View.setPadding()`来实现的滑动，在下拉距离超过header高度后，会造成不断的`requestLayout()`!这就解释了为什么图中UI线程的蓝色块时间(measure时间)很明显。**当你在视图层级比较复杂的app中使用它时，下拉动作所造成的开销会非常明显，卡顿是必然结果。**
 
-###4. Yalantis's Ptr
+### 4. Yalantis's Ptr
 
 滑动实现方式：通过`View.topAndBottomOffset()`移动视图，在松手之后启动一个`Animation`执行回滚动画，内容视图的移动也使用`View.offsetTopAndBottom()`实现。为了保证子内容视图的底部padding在移动之后与布局文件中的padding属性一致，它额外调用了`View.setPadding()`实时设置padding。
 
@@ -193,7 +184,7 @@ trace snapshot:
 
 trace snapshot:
 
-![trace_yalantis](http://image.desmondyao.com/ptr_comp/yalantis.PNG)
+![trace_yalantis](ptr_comp/yalantis.PNG)
 
 **分析**：
 
@@ -201,19 +192,19 @@ trace snapshot:
 
 它在松手后回滚时调用的`View.setPadding()`可能会造成measure开销比较大，于是我特地测了一下松手回滚的trace，一看确实measure时间非常可观：
 
-![trace_yalantis_scroll_back](http://image.desmondyao.com/ptr_comp/yalantis_back.PNG)
+![trace_yalantis_scroll_back](ptr_comp/yalantis_back.PNG)
 
 确实它如果要保证展示内容视图的padding与布局文件中一致，是必须这么做的（调用`View.setPadding()`），因为通过`View.offsetTopAndBottom()`向下移动子视图时，子视图的内容整个移动下来，在视觉上会影响它设置好的底部padding。但是很有意思，它向下移动的时候没有这么设置，拉下来的时候底部padding就没了。回滚动画的时候才设了padding，就显得没那么必要了。我在demo中也进行了实践，确实是这样的：
 
-![yalantis_padding](http://image.desmondyao.com/ptr_comp/yalantis_padding.gif)
+![yalantis_padding](ptr_comp/yalantis_padding.gif)
 
 我暂时也没想到什么方法可以更好地处理子视图padding问题。但实际上，由于这个库是一个嵌套视图，并且只会有一个内容视图显示出来，可以尝试放弃对子视图padding的处理。如果需要，可以使用父视图的padding来代替，这样是最完美的效果。子视图再怎么移动，也会被父视图已经设好的padding局限住。由此一来padding就不会被影响，同时提高了性能。不过这样一来牺牲了子视图padding的设置，在使用的时候可以根据需要各取所需。
 
 我粗略的做了一点点改动，将它的`setPadding()`注释掉了。不过由于该库的一些其他实现逻辑，导致会有一些问题，此处仅看性能上的变化，改动后松手回滚trace，已经没有了measure时间：
 
-![yalantis_back_trace_new](http://image.desmondyao.com/ptr_comp/yalantis_back_new.PNG)
+![yalantis_back_trace_new](ptr_comp/yalantis_back_new.PNG)
 
-###5. race604's Ptr
+### 5. race604's Ptr
 
 滑动实现方式：`View.topAndBottomOffset()`
 
@@ -224,11 +215,11 @@ trace snapshot:
 
 trace snapshot:
 
-![trace_flyrefresh](http://image.desmondyao.com/ptr_comp/flyrefresh.PNG)
+![trace_flyrefresh](ptr_comp/flyrefresh.PNG)
 
 **分析**：每次拖动都会重新计算背景"山体"与"树木"的`Path`，造成了draw时间过长。效果不错，也是一个好的学习对象，相比`Yalantis`的下拉刷新性能上就差一些了，它的draw中的计算量太多。使用起来疑似有bug：拖动到顶部，无法再往上拖动，并且会出现拖动异常。
 
-###6. SwipeRefreshLayout
+### 6. SwipeRefreshLayout
 
 滑动实现方式：内容固定，仅有顶部动效。
 
@@ -239,7 +230,7 @@ trace snapshot:
 
 trace snapshot:
 
-![trace_swipe](http://image.desmondyao.com/ptr_comp/swipe.PNG)
+![trace_swipe](ptr_comp/swipe.PNG)
 
 **分析**：官方的下拉刷新组件，动画十分美观简洁，API构造清晰明了。但是为什么每次的移动都会有一段明显的measure时间呢？我研究了一下代码，发现罪魁祸首是`View.bringToFront()`，它在每一次滑动的时候都会对顶部动效视图调用这个函数。仔细追朔这个函数源码，它会走到下面这段代码中：
 
@@ -261,9 +252,9 @@ trace snapshot:
 
 于是我copy了一份代码，将这一行注了(对应代码ptr-source-lib/src/main/java/com/android/support/SwipeRefreshLayout.java)，再次编译，measure时间确实没掉了，对功能毫无影响，性能却有了很大优化：
 
-![trace_swipe](http://image.desmondyao.com/ptr_comp/swipe_new.PNG)
+![trace_swipe](ptr_comp/swipe_new.PNG)
 
-这样一来就不会每一次拉动，都会触发measure。若有同学知道这个`bringToFront()`在其中有其他我未探测到的功效，请issue指点:) 
+这样一来就不会每一次拉动，都会触发measure。若有同学知道这个`bringToFront()`在其中有其他我未探测到的功效，请issue指点:)
 
 ## 总结
 
