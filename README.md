@@ -120,7 +120,7 @@ dispatch阶段直接处理了分发逻辑与UI移动逻辑。只要它自身或�
 - **Yalantis's ptr** 嵌套视图，处理类似Chris banes' ptr；
 - **race604's ptr** 嵌套视图，处理类似Chris banes' ptr；
 
-##性能分析
+## 性能分析
 
 通过捕捉如下图中的操作持续1秒钟的systrace进行性能分析：
 
